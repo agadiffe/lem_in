@@ -6,7 +6,7 @@
 #    By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/05/14 20:31:10 by agadiffe          #+#    #+#              #
-#    Updated: 2017/02/23 12:04:31 by agadiffe         ###   ########.fr        #
+#    Updated: 2017/02/25 13:34:42 by agadiffe         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,8 @@ CC = gcc
 CFLAGS += -Wall -Werror -Wextra
 
 SRC_PATH = ./srcs/
-SRC_NAME = main.c
+SRC_NAME = main.c			\
+		   print_map.c		\
 
 OBJ_PATH = ./obj/
 OBJ_NAME = $(SRC_NAME:.c=.o)
@@ -28,7 +29,7 @@ OBJ = $(addprefix $(OBJ_PATH),$(OBJ_NAME))
 
 INC_PATH = ./includes/
 INC = $(addprefix -I,$(INC_PATH))
-INC_FILE = $(INC_PATH)$(NAME).h
+INC_FILE = $(INC_PATH)lem_in.h
 
 
 LIBFT_PATH = ./libft/
