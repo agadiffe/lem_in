@@ -6,14 +6,74 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/23 11:19:45 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/02/25 15:00:08 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/02/25 18:47:23 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 #include <unistd.h>
+#include <stdlib.h>
 
-int		get_ants_number(void)
+t_list		*get_room_node(t_list **alst, char *name)
+{
+	t_list	*tmp;
+
+	tmp = *alst;
+	while (tmp && ft_strcmp(((t_room *)tmp->content)->name, name))
+		tmp = tmp->next;
+	return (tmp);
+}
+
+void		command_start(t_data *data, char *s)
+{
+	t_list	*tmp;
+	t_list	*tmp_room;
+
+	tmp = data->room;
+	while (tmp)
+	{
+		((t_room *)tmp->content)->start = 0;
+		tmp = tmp->next;
+	}
+	tmp_room = get_room_node(&data->room, s);
+	((t_room *)tmp_room->content)->start = 1;
+}
+
+void		command_end(t_data *data, char *s)
+{
+	t_list	*tmp;
+	t_list	*tmp_room;
+
+	tmp = data->room;
+	while (tmp)
+	{
+		((t_room *)tmp->content)->end = 0;
+		tmp = tmp->next;
+	}
+	tmp_room = get_room_node(&data->room, s);
+	((t_room *)tmp_room->content)->end = 1;
+}
+
+t_command	*get_command(int to_free)
+{
+	static t_command	*type;
+
+	if (!type)
+	{
+		if ((type = (t_command *)malloc(sizeof(t_command) * OPTION)))
+		{
+			type[0] = (t_command){ &command_start, "##start" };
+			type[1] = (t_command){ &command_end, "##end" };
+		}
+		else
+			ft_error("Malloc error", 2);
+	}
+	if (to_free)
+		free(type);
+	return (type);
+}
+
+int			get_ants_number(void)
 {
 	char	*line;
 	int		ants;
@@ -26,7 +86,7 @@ int		get_ants_number(void)
 	return (ants > 0 ? ants : 0);
 }
 
-int		add_new_room(t_data *data, char *s)
+int			add_new_room(t_data *data, char *s)
 {
 	char		*str;
 	t_list		*tmp;
@@ -43,6 +103,7 @@ int		add_new_room(t_data *data, char *s)
 	((t_room *)tmp->content)->x = ft_atoi(str);
 	*str = '\0';
 	((t_room *)tmp->content)->name = ft_strdup(s);
+	((t_room *)tmp->content)->room_number = data->nbr_room++;
 	// detect if command start or end and fill data->start & end
 	// check if previous node have start or end
 	// check if duplicate command / comment ?? need ?
@@ -56,7 +117,7 @@ int		add_new_room(t_data *data, char *s)
 	return (bad_data ? 1 : 0);
 }
 
-void	add_new_instruction(t_data *data, char *s)
+void		add_new_instruction(t_data *data, char *s)
 {
 	t_list		*tmp;
 
@@ -65,7 +126,7 @@ void	add_new_instruction(t_data *data, char *s)
 	((t_instruction *)tmp->content)->instruction = ft_strdup(s);
 }
 
-int		fill_room(t_data *data, char *s)
+int			fill_room(t_data *data, char *s)
 {
 	int		bad_data;
 
@@ -77,17 +138,7 @@ int		fill_room(t_data *data, char *s)
 	return (bad_data ? 1 : 0);
 }
 
-t_list	*get_room_node(t_list **alst, char *name)
-{
-	t_list	*tmp;
-
-	tmp = *alst;
-	while (tmp && ft_strcmp(((t_room *)tmp->content)->name, name))
-		tmp = tmp->next;
-	return (tmp);
-}
-
-int		add_new_pipe(t_data *data, char *s)
+int			add_new_pipe(t_data *data, char *s)
 {
 	char		*str;
 	t_list		*tmp;
@@ -116,7 +167,7 @@ int		add_new_pipe(t_data *data, char *s)
 	return (bad_data ? 1 : 0);
 }
 
-int		fill_pipe(t_data *data, char *s)
+int			fill_pipe(t_data *data, char *s)
 {
 	int		bad_data;
 
@@ -128,7 +179,7 @@ int		fill_pipe(t_data *data, char *s)
 	return (bad_data ? 1 : 0);
 }
 
-int		get_data(t_data *data, char *s)
+int			get_data(t_data *data, char *s)
 {
 	int		bad_data;
 
@@ -142,12 +193,12 @@ int		get_data(t_data *data, char *s)
 	return (bad_data ? 1 : 0);
 }
 
-void	handle_data(t_data *data)
+void		handle_data(t_data *data)
 {
 	(void)data;
 }
 
-int		main(int ac, char **av)
+int			main(int ac, char **av)
 {
 	char		*line;
 	t_data		data;
@@ -157,6 +208,7 @@ int		main(int ac, char **av)
 	(void)av;
 	stop_get_data = 0;
 	data.get_room_data = 1;
+	data.nbr_room = 0;
 	data.ants = get_ants_number();
 	data.room = NULL;
 	data.pipe = NULL;

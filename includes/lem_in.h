@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/23 12:06:15 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/02/25 13:34:29 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/02/25 18:45:26 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct		s_data
 {
 	int				ants;
 	int				get_room_data;
+	int				nbr_room;
 	t_room			room_content;
 	t_pipe			pipe_content;
 	t_instruction	instruction_content;
@@ -52,6 +53,12 @@ typedef struct		s_data
 	t_list			*pipe;
 	t_list			*instruction;
 }					t_data;
+
+typedef struct		s_command
+{
+	void			(*choice)(t_data *, char *);
+	char			*name;
+}					t_command;
 
 /*
 **	print_map.c
