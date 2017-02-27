@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/23 11:19:45 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/02/25 18:47:23 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/02/27 18:55:27 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,45 @@ t_list		*get_room_node(t_list **alst, char *name)
 	while (tmp && ft_strcmp(((t_room *)tmp->content)->name, name))
 		tmp = tmp->next;
 	return (tmp);
+}
+
+void		free_instruction_content(void *content, size_t content_size)
+{
+	(void)content_size;
+	ft_strdel(&((t_instruction *)content)->instruction);
+}
+
+void		free_room_content(void *content, size_t content_size)
+{
+	(void)content_size;
+	ft_strdel(&((t_room *)content)->name);
+	ft_lstdel(&((t_room *)content)->instruction, free_instruction_content);
+}
+
+void		delete_room_node(t_list **alst, char *name)
+{
+	t_list	*node_to_del;
+	t_list	*tmp;
+
+	node_to_del = get_room_node(alst, name);
+	if (*alst == node_to_del)
+	{
+		*alst = (*alst)->next;
+	}
+	else
+	{
+		tmp = *alst;
+		while (tmp->next != node_to_del)
+			tmp = tmp->next;
+		tmp->next = tmp->next->next;
+	}
+	ft_lstdelone(&node_to_del, free_room_content);
+}
+
+void		delete_instruction_node(t_list **alst, char *name)
+{
+	(void)alst;
+	(void)name;
 }
 
 void		command_start(t_data *data, char *s)
@@ -106,7 +145,7 @@ int			add_new_room(t_data *data, char *s)
 	((t_room *)tmp->content)->room_number = data->nbr_room++;
 	// detect if command start or end and fill data->start & end
 	// check if previous node have start or end
-	// check if duplicate command / comment ?? need ?
+	// check if duplicate command / comment ??
 	if (data->instruction)
 	{
 		((t_room *)tmp->content)->instruction = data->instruction;
@@ -146,24 +185,30 @@ int			add_new_pipe(t_data *data, char *s)
 	int			bad_data;
 
 	bad_data = 0;
-	//fail pipe if room doesnt exista or if dont '-'
-	tmp = ft_lstnew(&data->pipe_content, sizeof(t_pipe));
-	ft_lstaddback(&data->pipe, tmp);
-	str = ft_strrchr(s, '-');
-	if ((tmp_room = get_room_node(&data->room, str + 1)) == NULL)
-		bad_data = 1;
-	((t_pipe *)tmp->content)->room2 = tmp_room;
-	*str = '\0';
-	if ((tmp_room = get_room_node(&data->room, s)) == NULL)
-		bad_data = 1;
-	((t_pipe *)tmp->content)->room1 = tmp_room;
-	if (data->instruction)
+	if ((str = ft_strrchr(s, '-')))
 	{
-		((t_pipe *)tmp->content)->instruction = data->instruction;
-		data->instruction = NULL;
+		tmp = ft_lstnew(&data->pipe_content, sizeof(t_pipe));
+		if ((tmp_room = get_room_node(&data->room, str + 1)) == NULL)
+			bad_data = 1;
+		((t_pipe *)tmp->content)->room2 = tmp_room;
+		*str = '\0';
+		if ((tmp_room = get_room_node(&data->room, s)) == NULL)
+			bad_data = 1;
+		((t_pipe *)tmp->content)->room1 = tmp_room;
+		if (bad_data == 0)
+		{
+			ft_lstaddback(&data->pipe, tmp);
+			if (data->instruction)
+			{
+				((t_pipe *)tmp->content)->instruction = data->instruction;
+				data->instruction = NULL;
+			}
+			else
+				((t_pipe *)tmp->content)->instruction = NULL;
+		}
+		else
+			ft_memdel((void**)&tmp);
 	}
-	else
-		((t_pipe *)tmp->content)->instruction = NULL;
 	return (bad_data ? 1 : 0);
 }
 
