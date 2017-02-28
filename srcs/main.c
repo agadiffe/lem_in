@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/23 11:19:45 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/02/27 18:55:27 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/02/28 19:34:11 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,29 +130,33 @@ int			add_new_room(t_data *data, char *s)
 	char		*str;
 	t_list		*tmp;
 	int			bad_data;
+	char		**array;
 
 	bad_data = 0;
-	//fail room if != "name x y" with x&y int
-	tmp = ft_lstnew(&data->room_content, sizeof(t_room));
-	ft_lstaddback(&data->room, tmp);
-	str = ft_strrchr(s, ' ');
-	((t_room *)tmp->content)->y = ft_atoi(str);
-	*str = '\0';
-	str = ft_strrchr(s, ' ');
-	((t_room *)tmp->content)->x = ft_atoi(str);
-	*str = '\0';
-	((t_room *)tmp->content)->name = ft_strdup(s);
-	((t_room *)tmp->content)->room_number = data->nbr_room++;
-	// detect if command start or end and fill data->start & end
-	// check if previous node have start or end
-	// check if duplicate command / comment ??
-	if (data->instruction)
+	array = ft_strsplitwith(s, " \t");
+	if (*s != 'L' && ft_strtablen(array) > 2)
 	{
-		((t_room *)tmp->content)->instruction = data->instruction;
-		data->instruction = NULL;
+		tmp = ft_lstnew(&data->room_content, sizeof(t_room));
+		ft_lstaddback(&data->room, tmp);
+		str = ft_strrchr(s, ' ');
+		((t_room *)tmp->content)->y = ft_atoi(str);
+		*str = '\0';
+		str = ft_strrchr(s, ' ');
+		((t_room *)tmp->content)->x = ft_atoi(str);
+		*str = '\0';
+		((t_room *)tmp->content)->name = ft_strdup(s);
+		((t_room *)tmp->content)->room_number = data->nbr_room++;
+		if (data->instruction)
+		{
+			((t_room *)tmp->content)->instruction = data->instruction;
+			data->instruction = NULL;
+		}
+		else
+			((t_room *)tmp->content)->instruction = NULL;
 	}
 	else
-		((t_room *)tmp->content)->instruction = NULL;
+		bad_data = 1;
+	ft_strtabdel(&array);
 	return (bad_data ? 1 : 0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/25 13:31:11 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/02/27 16:03:00 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/02/28 18:57:06 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,21 @@ static void		print_pipe(t_data *data)
 
 void			print_map(t_data *data)
 {
+	t_list		*tmp;
+	char		*str;
+
 	ft_putnbr_endl(data->ants);
 	print_room(data);
 	print_pipe(data);
+	if (data->instruction)
+	{
+		tmp = data->instruction;
+		while (tmp)
+		{
+			str = ((t_instruction *)tmp->content)->instruction;
+			if (*(str + 1) != '#')
+				ft_putendl(str);
+			tmp = tmp->next;
+		}
+	}
 }
