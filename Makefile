@@ -21,6 +21,10 @@ CFLAGS += -Wall -Werror -Wextra
 SRC_PATH = ./srcs/
 SRC_NAME = main.c			\
 		   print_map.c		\
+		   add_node.c		\
+		   command.c		\
+		   is_room.c		\
+		   list_func.c
 
 OBJ_PATH = ./obj/
 OBJ_NAME = $(SRC_NAME:.c=.o)

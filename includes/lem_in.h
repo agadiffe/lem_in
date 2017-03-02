@@ -61,6 +61,30 @@ typedef struct		s_command
 }					t_command;
 
 /*
+**	add_node.c.c
+*/
+int					add_new_room(t_data *data, char *s);
+void				add_new_instruction(t_data *data, char *s);
+int					add_new_pipe(t_data *data, char *s);
+
+/*
+**	command.c
+*/
+t_command			*get_command(int to_free);
+void				command_end(t_data *data, char *s);
+void				command_start(t_data *data, char *s);
+
+/*
+**	is_room.c
+*/
+int					is_room(char *name);
+
+/*
+**	list_func.c
+*/
+t_list				*get_room_node(t_list **alst, char *name);
+
+/*
 **	print_map.c
 */
 void				print_map(t_data *data);
