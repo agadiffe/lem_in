@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/23 12:06:15 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/02/27 15:18:50 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/03/03 18:19:14 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int					is_room(char *name);
 /*
 **	list_func.c
 */
-t_list				*get_room_node(t_list **alst, char *name);
+t_list				*get_room_node(t_list **alst, char *name1, char *name2);
 
 /*
 **	print_map.c

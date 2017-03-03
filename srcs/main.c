@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/23 11:19:45 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/02/28 19:34:11 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/03/03 17:40:02 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int			get_data(t_data *data, char *s)
 {
 	int		bad_data;
 
+	bad_data = 0;
 	if (*s != '#' && data->get_room_data && !is_room(s))
 		data->get_room_data = 0;
 	if (*s == '#')
@@ -73,7 +74,6 @@ int			main(int ac, char **av)
 	{
 		if (get_data(&data, line))
 			stop_get_data = 1;
-		ft_strdel(&line);
 	}
 	handle_data(&data);
 	print_map(&data);

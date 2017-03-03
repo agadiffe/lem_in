@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:39:45 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/03/02 22:42:11 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/03/03 17:57:48 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int			add_new_room(t_data *data, char *s)
 		str = ft_strrchr(s, ' ');
 		((t_room *)tmp->content)->x = ft_atoi(str);
 		*str = '\0';
-		((t_room *)tmp->content)->name = ft_strdup(s);
+		((t_room *)tmp->content)->name = s;
 		((t_room *)tmp->content)->room_number = data->nbr_room++;
 		((t_room *)tmp->content)->instruction = data->instruction;
 		data->instruction = NULL;
@@ -45,7 +45,7 @@ void		add_new_instruction(t_data *data, char *s)
 
 	tmp = ft_lstnew(&data->instruction_content, sizeof(t_instruction));
 	ft_lstaddback(&data->instruction, tmp);
-	((t_instruction *)tmp->content)->instruction = ft_strdup(s);
+	((t_instruction *)tmp->content)->instruction = s;
 }
 
 int			add_new_pipe(t_data *data, char *s)
@@ -58,17 +58,17 @@ int			add_new_pipe(t_data *data, char *s)
 	bad_data = 0;
 	str = ft_strrchr(s, '-');
 	tmp = ft_lstnew(&data->pipe_content, sizeof(t_pipe));
-	if ((tmp_room = get_room_node(&data->room, str + 1)) == NULL)
+	if ((tmp_room = get_room_node(&data->room, str + 1, "")) == NULL)
 		bad_data = 1;
 	((t_pipe *)tmp->content)->room2 = tmp_room;
 	*str = '\0';
-	if ((tmp_room = get_room_node(&data->room, s)) == NULL)
+	if ((tmp_room = get_room_node(&data->room, s, "")) == NULL)
 		bad_data = 1;
 	((t_pipe *)tmp->content)->room1 = tmp_room;
 	if (bad_data == 0)
 	{
 		ft_lstaddback(&data->pipe, tmp);
-		((t_room *)tmp->content)->instruction = data->instruction;
+		((t_pipe *)tmp->content)->instruction = data->instruction;
 		data->instruction = NULL;
 	}
 	else
