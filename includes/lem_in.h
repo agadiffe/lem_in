@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/23 12:06:15 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/03/03 18:19:14 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/04/07 20:00:25 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,10 @@
 # include <stddef.h>
 # include "libft.h"
 
-# define OPTION		2
+# define OPTION			2
+
+# define ROOM			0
+# define PIPE			1
 
 typedef struct		s_instruction
 {
@@ -25,6 +28,7 @@ typedef struct		s_instruction
 
 typedef struct		s_room
 {
+	int				old;
 	int				start;
 	int				end;
 	int				x;
@@ -32,10 +36,12 @@ typedef struct		s_room
 	int				room_number;
 	char			*name;
 	t_list			*instruction;
+	t_list			*room_pipe;
 }					t_room;
 
 typedef struct		s_pipe
 {
+	char			*name;
 	t_list			*room1;
 	t_list			*room2;
 	t_list			*instruction;
@@ -56,7 +62,7 @@ typedef struct		s_data
 
 typedef struct		s_command
 {
-	void			(*choice)(t_data *, char *);
+	void			(*choice)(t_data *, char *, char *);
 	char			*name;
 }					t_command;
 
@@ -71,8 +77,6 @@ int					add_new_pipe(t_data *data, char *s);
 **	command.c
 */
 t_command			*get_command(int to_free);
-void				command_end(t_data *data, char *s);
-void				command_start(t_data *data, char *s);
 
 /*
 **	is_room.c
@@ -83,10 +87,20 @@ int					is_room(char *name);
 **	list_func.c
 */
 t_list				*get_room_node(t_list **alst, char *name1, char *name2);
+t_list				*get_pipe_node(t_list **alst, char *name1, char *name2);
+t_list				*get_instruction_node(t_list **alst, char *name1,
+											char *name2);
+void				delete_node(t_list **alst, char *room1, char *room2,
+								int choice);
 
 /*
 **	print_map.c
 */
 void				print_map(t_data *data);
+
+/*
+**	handle_data.c
+*/
+void				handle_data(t_data *data);
 
 #endif

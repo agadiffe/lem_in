@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/23 11:19:45 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/03/03 17:40:02 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/04/06 20:01:03 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int			get_ants_number(void)
 	char	*line;
 	int		ants;
 
+	line = NULL;
 	ants = 0;
 	ft_get_next_line(0, &line);
 	if (ft_strisnumber(line))
@@ -41,11 +42,6 @@ int			get_data(t_data *data, char *s)
 	else
 		bad_data = 1;
 	return (bad_data ? 1 : 0);
-}
-
-void		handle_data(t_data *data)
-{
-	(void)data;
 }
 
 void		init_data(t_data *data)

@@ -1,5 +1,8 @@
 33
 ##start
+##end
+##end
+##start
 0 1 0
 ##end
 ##big
@@ -14,6 +17,6 @@
 2-3
 3-1
 #comment_end1
-##command_end1
+#command_end1
 #
 #comment_end2

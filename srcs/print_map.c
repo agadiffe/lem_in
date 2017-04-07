@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/25 13:31:11 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/03/03 17:36:41 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/04/07 19:26:01 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,30 @@ static void		print_pipe(t_data *data)
 	}
 }
 
-void			print_map(t_data *data)
+static int		check_if_command_after_pipe(t_data *data)
 {
 	t_list		*tmp;
 	char		*str;
 
-	ft_putnbr_endl(data->ants);
-	print_room(data);
-	print_pipe(data);
+	if (data->instruction)
+	{
+		tmp = data->instruction;
+		while (tmp)
+		{
+			str = ((t_instruction *)tmp->content)->instruction;
+			if (*(str + 1) == '#')
+				return (1);
+			tmp = tmp->next;
+		}
+	}
+	return (0);
+}
+
+static void		print_last_comment(t_data *data)
+{
+	t_list		*tmp;
+	char		*str;
+
 	if (data->instruction)
 	{
 		tmp = data->instruction;
@@ -77,4 +93,17 @@ void			print_map(t_data *data)
 			tmp = tmp->next;
 		}
 	}
+}
+
+void			print_map(t_data *data)
+{
+	if (check_if_command_after_pipe(data))
+	{
+		//free everything
+		ft_error("ERROR", 1);
+	}
+	ft_putnbr_endl(data->ants);
+	print_room(data);
+	print_pipe(data);
+	print_last_comment(data);
 }

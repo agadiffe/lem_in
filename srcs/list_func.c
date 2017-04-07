@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:37:45 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/03/03 18:26:05 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/04/06 21:02:30 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_list		*get_instruction_node(t_list **alst, char *name1, char *name2)
 
 	(void)name2;
 	tmp = *alst;
-	while (tmp && ft_strcmp(((t_instruction *)tmp->content)->name, name1))
+	while (tmp && ft_strcmp(((t_instruction*)tmp->content)->instruction, name1))
 		tmp = tmp->next;
 	return (tmp);
 }
@@ -69,13 +69,27 @@ void		free_room_content(void *content, size_t content_size)
 void		free_pipe_content(void *content, size_t content_size)
 {
 	(void)content_size;
+	ft_strdel(&((t_pipe *)content)->name);
 	ft_lstdel(&((t_pipe *)content)->instruction, free_instruction_content);
 }
 
-void		delete_node(t_list **alst, char *room1, char *room2)
+void		delete_node(t_list **alst, char *room1, char *room2, int choice)
 {
 	t_list	*node_to_del;
 
-	node_to_del = get_room_node(alst, room1, room2);
-	ft_lstdelnode(alst, &node_to_del, free_room_content);
+	if (choice == ROOM)
+	{
+		node_to_del = get_room_node(alst, room1, room2);
+		ft_lstdelnode(alst, &node_to_del, free_room_content);
+	}
+	else if (choice == PIPE)
+	{
+		node_to_del = get_pipe_node(alst, room1, room2);
+		ft_lstdelnode(alst, &node_to_del, free_pipe_content);
+	}
+	else
+	{
+		node_to_del = get_instruction_node(alst, room1, room2);
+		ft_lstdelnode(alst, &node_to_del, free_instruction_content);
+	}
 }

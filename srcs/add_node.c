@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:39:45 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/03/03 17:57:48 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/04/06 21:12:29 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,16 +55,17 @@ int			add_new_pipe(t_data *data, char *s)
 	t_list		*tmp_room;
 	int			bad_data;
 
-	bad_data = 0;
 	str = ft_strrchr(s, '-');
 	tmp = ft_lstnew(&data->pipe_content, sizeof(t_pipe));
-	if ((tmp_room = get_room_node(&data->room, str + 1, "")) == NULL)
-		bad_data = 1;
+	((t_pipe *)tmp->content)->name = s;
+	tmp_room = get_room_node(&data->room, str + 1, "");
 	((t_pipe *)tmp->content)->room2 = tmp_room;
 	*str = '\0';
-	if ((tmp_room = get_room_node(&data->room, s, "")) == NULL)
-		bad_data = 1;
+	tmp_room = get_room_node(&data->room, s, "");
 	((t_pipe *)tmp->content)->room1 = tmp_room;
+	*str = '-';
+	bad_data = ((t_pipe *)tmp->content)->room1
+					&& ((t_pipe *)tmp->content)->room2 ? 0 : 1;
 	if (bad_data == 0)
 	{
 		ft_lstaddback(&data->pipe, tmp);
