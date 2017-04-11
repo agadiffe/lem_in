@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/23 12:06:15 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/04/07 20:00:25 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/04/11 17:25:36 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,11 @@ typedef struct		s_room
 	t_list			*room_pipe;
 }					t_room;
 
+typedef struct		s_room_pipe
+{
+	t_room			*room;
+}					t_room_pipe;
+
 typedef struct		s_pipe
 {
 	char			*name;
@@ -55,6 +60,7 @@ typedef struct		s_data
 	t_room			room_content;
 	t_pipe			pipe_content;
 	t_instruction	instruction_content;
+	t_room_pipe		room_pipe_content;
 	t_list			*room;
 	t_list			*pipe;
 	t_list			*instruction;
@@ -72,6 +78,7 @@ typedef struct		s_command
 int					add_new_room(t_data *data, char *s);
 void				add_new_instruction(t_data *data, char *s);
 int					add_new_pipe(t_data *data, char *s);
+void				add_pipe_to_room_list(t_data *data);
 
 /*
 **	command.c

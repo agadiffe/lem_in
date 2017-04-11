@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/23 11:19:45 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/04/06 20:01:03 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/04/10 17:40:19 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ int			main(int ac, char **av)
 		if (get_data(&data, line))
 			stop_get_data = 1;
 	}
+	add_pipe_to_room_list(&data);
 	handle_data(&data);
 	print_map(&data);
 	return (0);

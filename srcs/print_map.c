@@ -6,11 +6,26 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/25 13:31:11 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/04/07 19:26:01 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/04/11 18:23:26 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
+
+static void		print_pipe_room_inside_room_list(t_list *room_pipe)
+{
+	t_list		*tmp;
+	t_room		*tmp_room;
+
+	tmp = room_pipe;
+	while (tmp)
+	{
+		tmp_room = (t_room *)((t_room_pipe *)tmp->content)->room;
+		ft_putstr("     -> pipe with: ");
+		ft_putendl(tmp_room->name);
+		tmp = tmp->next;
+	}
+}
 
 static void		print_room(t_data *data)
 {
@@ -31,6 +46,7 @@ static void		print_room(t_data *data)
 		ft_putnbr(((t_room *)tmp->content)->x);
 		ft_putstr(" ");
 		ft_putnbr_endl(((t_room *)tmp->content)->y);
+		print_pipe_room_inside_room_list(((t_room *)tmp->content)->room_pipe);
 		tmp = tmp->next;
 	}
 }
