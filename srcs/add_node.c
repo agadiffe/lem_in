@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:39:45 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/05/23 19:06:23 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/05/23 19:23:15 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,52 +81,35 @@ int			add_new_pipe(t_data *data, char *s)
 	return (bad_data ? 1 : 0);
 }
 
-#include <stdio.h>
-
-void		print_t_room_pipe(t_room *room)
-{
-	t_list	*tmp;
-
-	ft_putendl("---------");
-	tmp = room->room_pipe;
-	while (tmp)
-	{
-		ft_putendl(((t_room_pipe *)tmp->content)->room->name);
-		tmp = tmp->next;
-	}
-	ft_putendl("---------");
-}
-
 int			check_if_pipe_exist(t_room *room, t_room *new_pipe)
 {
 	t_list	*tmp;
 
-	print_t_room_pipe(room);
 	tmp = room->room_pipe;
-	printf("check function room1(%s): %p\n", room->name, room);
-	printf("check function room2(%s): %p\n", new_pipe->name, new_pipe);
-	ft_putendl("      |-> check if pipe");
 	while (tmp)
 	{
-		ft_putendl("t_room_pipe not empty");
-		printf("room(%s) :    %p\n",
-				((t_room_pipe *)tmp->content)->room->name,
-				((t_room_pipe *)tmp->content)->room);
-		printf("new_pipe(%s): %p\n", new_pipe->name, new_pipe);
 		if (((t_room_pipe *)tmp->content)->room == new_pipe)
-		{
-			ft_putendl("duplicate");
 			return (1);
-		}
 		tmp = tmp->next;
 	}
 	return (0);
 }
 
+void		add_pipe_handle(t_data *data, t_room *room, t_room *new_pipe)
+{
+	t_list	*tmp2;
+
+	if (!check_if_pipe_exist(room, new_pipe))
+	{
+		tmp2 = ft_lstnew(&data->room_pipe_content, sizeof(t_room_pipe));
+		((t_room_pipe *)tmp2->content)->room = new_pipe;
+		ft_lstaddback(&room->room_pipe, tmp2);
+	}
+}
+
 void		add_pipe_to_room_list(t_data *data)
 {
 	t_list	*tmp;
-	t_list	*tmp2;
 	t_pipe	*pipe;
 	t_room	*room1;
 	t_room	*room2;
@@ -137,22 +120,8 @@ void		add_pipe_to_room_list(t_data *data)
 		pipe = (t_pipe *)tmp->content;
 		room1 = (t_room *)pipe->room1->content;
 		room2 = (t_room *)pipe->room2->content;
-		printf("original room1(%s): %p\n", room1->name, room1);
-		printf("original room2(%s): %p\n", room2->name, room2);
-		if (!check_if_pipe_exist(room1, room2))
-		{
-			ft_putendl("add pipe to room1");
-			tmp2 = ft_lstnew(&data->room_pipe_content, sizeof(t_room_pipe));
-			((t_room_pipe *)tmp2->content)->room = room2;
-			ft_lstaddback(&room1->room_pipe, tmp2);
-		}
-		if (!check_if_pipe_exist(room2, room1))
-		{
-			ft_putendl("add pipe to room2");
-			tmp2 = ft_lstnew(&data->room_pipe_content, sizeof(t_room_pipe));
-			((t_room_pipe *)tmp2->content)->room = room1;
-			ft_lstaddback(&room2->room_pipe, tmp2);
-		}
+		add_pipe_handle(data, room1, room2);
+		add_pipe_handle(data, room2, room1);
 		tmp = tmp->next;
 	}
 }
