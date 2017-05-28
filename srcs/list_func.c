@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:37:45 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/04/06 21:02:30 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/05/28 16:51:59 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,18 @@ t_list		*get_pipe_node(t_list **alst, char *name1, char *name2)
 	t_room	*tmp_room2;
 
 	tmp = *alst;
-	tmp_pipe = (t_pipe *)tmp->content;
-	tmp_room1 = (t_room *)tmp_pipe->room1->content;
-	tmp_room2 = (t_room *)tmp_pipe->room2->content;
-	while (tmp && ((ft_strcmp(tmp_room1->name, name1)
-					&& ft_strcmp(tmp_room2->name, name2))
-				|| (ft_strcmp(tmp_room1->name, name2)
-					&& ft_strcmp(tmp_room2->name, name1))))
+	while (tmp)
+	{
+		tmp_pipe = (t_pipe *)tmp->content;
+		tmp_room1 = (t_room *)tmp_pipe->room1->content;
+		tmp_room2 = (t_room *)tmp_pipe->room2->content;
+		if ((!ft_strcmp(tmp_room1->name, name1)
+					&& !ft_strcmp(tmp_room2->name, name2))
+				|| (!ft_strcmp(tmp_room1->name, name2)
+					&& !ft_strcmp(tmp_room2->name, name1)))
+			return (tmp);
 		tmp = tmp->next;
+	}
 	return (tmp);
 }
 
