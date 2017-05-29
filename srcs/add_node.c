@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:39:45 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/05/23 19:23:15 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/05/29 20:04:43 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,24 @@ void		add_new_instruction(t_data *data, char *s)
 	((t_instruction *)tmp->content)->instruction = s;
 }
 
+/*
+static void		print_inst(t_list *elem)
+{
+	ft_putendl(((t_instruction *)elem->content)->instruction);
+}
+*/
+
+static t_list	*copy_inst_lst(t_list *elem)
+{
+	return (elem);
+}
+
 int			add_new_pipe(t_data *data, char *s)
 {
 	char		*str;
 	t_list		*tmp;
 	t_list		*tmp_room;
+	t_list		*tmp_pipe;
 	int			bad_data;
 
 	str = ft_strrchr(s, '-');
@@ -67,17 +80,36 @@ int			add_new_pipe(t_data *data, char *s)
 	*str = '\0';
 	tmp_room = get_room_node(&data->room, s, "");
 	((t_pipe *)tmp->content)->room1 = tmp_room;
-	*str = '-';
 	bad_data = ((t_pipe *)tmp->content)->room1
 					&& ((t_pipe *)tmp->content)->room2 ? 0 : 1;
 	if (bad_data == 0)
 	{
-		ft_lstaddback(&data->pipe, tmp);
 		((t_pipe *)tmp->content)->instruction = data->instruction;
 		data->instruction = NULL;
+		if (((t_pipe *)tmp->content)->instruction)
+		{
+			if ((tmp_pipe = get_pipe_node(&data->pipe, s, str + 1)))
+			{
+				ft_lstaddback(&((t_pipe *)tmp_pipe->content)->all_instruction,
+							ft_lstmap(((t_pipe *)tmp->content)->instruction,
+									copy_inst_lst));
+				((t_pipe *)tmp->content)->all_instruction =
+					((t_pipe *)tmp_pipe->content)->all_instruction;
+			}
+			else
+			{
+				((t_pipe *)tmp->content)->all_instruction =
+					ft_lstmap(((t_pipe *)tmp->content)->instruction,
+							copy_inst_lst);
+			}
+		}
+		else
+			((t_pipe *)tmp->content)->all_instruction = NULL;
+		ft_lstaddback(&data->pipe, tmp);
 	}
 	else
 		ft_memdel((void**)&tmp);
+	*str = '-';
 	return (bad_data ? 1 : 0);
 }
 

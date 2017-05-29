@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/23 12:06:15 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/04/11 17:25:36 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/05/29 20:20:46 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ typedef struct		s_pipe
 	t_list			*room1;
 	t_list			*room2;
 	t_list			*instruction;
+	t_list			*all_instruction;
 }					t_pipe;
 
 typedef struct		s_data
