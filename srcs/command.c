@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:41:45 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/04/06 21:14:55 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/05/30 16:45:02 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void		command_start(t_data *data, char *room1, char *room2)
 		((t_room *)tmp->content)->start = 0;
 		tmp = tmp->next;
 	}
-	tmp_room = get_room_node(&data->room, room1, room2);
+	tmp_room = get_room_node_by_name(&data->room, room1, room2);
 	((t_room *)tmp_room->content)->start = 1;
 }
 
@@ -39,7 +39,7 @@ static void		command_end(t_data *data, char *room1, char *room2)
 		((t_room *)tmp->content)->end = 0;
 		tmp = tmp->next;
 	}
-	tmp_room = get_room_node(&data->room, room1, room2);
+	tmp_room = get_room_node_by_name(&data->room, room1, room2);
 	((t_room *)tmp_room->content)->end = 1;
 }
 

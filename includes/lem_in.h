@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/23 12:06:15 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/05/29 20:20:46 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/05/30 16:33:52 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct		s_room_pipe
 
 typedef struct		s_pipe
 {
+	int				old;
 	char			*name;
 	t_list			*room1;
 	t_list			*room2;
@@ -94,7 +95,9 @@ int					is_room(char *name);
 /*
 **	list_func.c
 */
-t_list				*get_room_node(t_list **alst, char *name1, char *name2);
+t_list				*get_room_node_by_name(t_list **alst, char *name1,
+											char *name2);
+t_list				*get_room_node_by_coord(t_list **alst, int x, int y);
 t_list				*get_pipe_node(t_list **alst, char *name1, char *name2);
 t_list				*get_instruction_node(t_list **alst, char *name1,
 											char *name2);

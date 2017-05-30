@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:39:45 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/05/29 20:04:43 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/05/30 17:39:30 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,6 @@ void		add_new_instruction(t_data *data, char *s)
 	((t_instruction *)tmp->content)->instruction = s;
 }
 
-/*
-static void		print_inst(t_list *elem)
-{
-	ft_putendl(((t_instruction *)elem->content)->instruction);
-}
-*/
-
 static t_list	*copy_inst_lst(t_list *elem)
 {
 	return (elem);
@@ -75,10 +68,11 @@ int			add_new_pipe(t_data *data, char *s)
 	str = ft_strrchr(s, '-');
 	tmp = ft_lstnew(&data->pipe_content, sizeof(t_pipe));
 	((t_pipe *)tmp->content)->name = s;
-	tmp_room = get_room_node(&data->room, str + 1, "");
+	((t_pipe *)tmp->content)->old = 0;
+	tmp_room = get_room_node_by_name(&data->room, str + 1, "");
 	((t_pipe *)tmp->content)->room2 = tmp_room;
 	*str = '\0';
-	tmp_room = get_room_node(&data->room, s, "");
+	tmp_room = get_room_node_by_name(&data->room, s, "");
 	((t_pipe *)tmp->content)->room1 = tmp_room;
 	bad_data = ((t_pipe *)tmp->content)->room1
 					&& ((t_pipe *)tmp->content)->room2 ? 0 : 1;
@@ -95,6 +89,7 @@ int			add_new_pipe(t_data *data, char *s)
 									copy_inst_lst));
 				((t_pipe *)tmp->content)->all_instruction =
 					((t_pipe *)tmp_pipe->content)->all_instruction;
+				((t_pipe *)tmp->content)->old = 1;
 			}
 			else
 			{

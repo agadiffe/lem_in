@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:37:45 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/05/28 16:51:59 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/05/30 17:37:26 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_list		*get_instruction_node(t_list **alst, char *name1, char *name2)
 {
-	t_list	*tmp;
+	t_list			*tmp;
 
 	(void)name2;
 	tmp = *alst;
@@ -23,7 +23,7 @@ t_list		*get_instruction_node(t_list **alst, char *name1, char *name2)
 	return (tmp);
 }
 
-t_list		*get_room_node(t_list **alst, char *name1, char *name2)
+t_list		*get_room_node_by_name(t_list **alst, char *name1, char *name2)
 {
 	t_list	*tmp;
 
@@ -31,6 +31,21 @@ t_list		*get_room_node(t_list **alst, char *name1, char *name2)
 	tmp = *alst;
 	while (tmp && ft_strcmp(((t_room *)tmp->content)->name, name1))
 		tmp = tmp->next;
+	return (tmp);
+}
+
+t_list		*get_room_node_by_coord(t_list **alst, int x, int y)
+{
+	t_list	*tmp;
+	t_room	*room;
+
+	tmp = *alst;
+	room = (t_room *)tmp->content;
+	while (tmp && x != room->x && y != room->y)
+	{
+		tmp = tmp->next;
+		room = (t_room *)tmp->content;
+	}
 	return (tmp);
 }
 
@@ -83,7 +98,7 @@ void		delete_node(t_list **alst, char *room1, char *room2, int choice)
 
 	if (choice == ROOM)
 	{
-		node_to_del = get_room_node(alst, room1, room2);
+		node_to_del = get_room_node_by_name(alst, room1, room2);
 		ft_lstdelnode(alst, &node_to_del, free_room_content);
 	}
 	else if (choice == PIPE)
