@@ -6,11 +6,34 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:39:45 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/05/30 17:39:30 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/05/31 20:45:19 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
+
+static t_list	*copy_lst(t_list *elem)
+{
+	return (elem);
+}
+
+static void		check_if_room_exist(t_data *data, t_room *room)
+{
+	t_list	*tmp_name;
+	t_list	*tmp_coord;
+	t_list	*tmp;
+
+	tmp_name = get_room_node_by_name(&data->room, room->name, "");
+	tmp_coord = get_room_node_by_coord(&data->room, room->x, room->y);
+	tmp = tmp_name ? tmp_name : tmp_coord;
+	if (tmp)
+	{
+		((t_room *)tmp->content)->old = 1;
+		ft_lstadd(&room->all_instruction,
+				ft_lstmap(((t_room *)tmp->content)->instruction, copy_lst));
+		((t_room *)tmp->content)->all_instruction = room->all_instruction;
+	}
+}
 
 int			add_new_room(t_data *data, char *s)
 {
@@ -22,7 +45,6 @@ int			add_new_room(t_data *data, char *s)
 	if (*s != 'L')
 	{
 		tmp = ft_lstnew(&data->room_content, sizeof(t_room));
-		ft_lstaddback(&data->room, tmp);
 		str = ft_strrchr(s, ' ');
 		((t_room *)tmp->content)->y = ft_atoi(str);
 		*str = '\0';
@@ -36,7 +58,10 @@ int			add_new_room(t_data *data, char *s)
 		((t_room *)tmp->content)->room_pipe = NULL;
 		((t_room *)tmp->content)->room_number = data->nbr_room++;
 		((t_room *)tmp->content)->instruction = data->instruction;
+		((t_room *)tmp->content)->all_instruction = NULL;
 		data->instruction = NULL;
+		check_if_room_exist(data, (t_room *)tmp->content);
+		ft_lstaddback(&data->room, tmp);
 	}
 	else
 		bad_data = 1;
@@ -50,11 +75,6 @@ void		add_new_instruction(t_data *data, char *s)
 	tmp = ft_lstnew(&data->instruction_content, sizeof(t_instruction));
 	ft_lstaddback(&data->instruction, tmp);
 	((t_instruction *)tmp->content)->instruction = s;
-}
-
-static t_list	*copy_inst_lst(t_list *elem)
-{
-	return (elem);
 }
 
 int			add_new_pipe(t_data *data, char *s)
@@ -86,7 +106,7 @@ int			add_new_pipe(t_data *data, char *s)
 			{
 				ft_lstaddback(&((t_pipe *)tmp_pipe->content)->all_instruction,
 							ft_lstmap(((t_pipe *)tmp->content)->instruction,
-									copy_inst_lst));
+									copy_lst));
 				((t_pipe *)tmp->content)->all_instruction =
 					((t_pipe *)tmp_pipe->content)->all_instruction;
 				((t_pipe *)tmp->content)->old = 1;
@@ -94,8 +114,7 @@ int			add_new_pipe(t_data *data, char *s)
 			else
 			{
 				((t_pipe *)tmp->content)->all_instruction =
-					ft_lstmap(((t_pipe *)tmp->content)->instruction,
-							copy_inst_lst);
+					ft_lstmap(((t_pipe *)tmp->content)->instruction, copy_lst);
 			}
 		}
 		else

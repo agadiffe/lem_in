@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/06 19:34:06 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/04/06 21:18:08 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/05/31 20:35:23 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,21 @@ static void		do_room_command(t_data *data)
 	tmp = data->room;
 	while (tmp)
 	{
-		room = ((t_room *)tmp->content)->name;
-		tmp2 = ((t_room *)tmp->content)->instruction;
-		while (tmp2)
+		if (((t_room *)tmp->content)->old != 1)
 		{
-			str = ((t_instruction *)tmp2->content)->instruction;
-			i = -1;
-			while (++i < OPTION)
+			room = ((t_room *)tmp->content)->name;
+			tmp2 = ((t_room *)tmp->content)->instruction;
+			while (tmp2)
 			{
-				if (!ft_strcmp(str, get_command(0)[i].name))
-					get_command(0)[i].choice(data, room, "");
+				str = ((t_instruction *)tmp2->content)->instruction;
+				i = -1;
+				while (++i < OPTION)
+				{
+					if (!ft_strcmp(str, get_command(0)[i].name))
+						get_command(0)[i].choice(data, room, "");
+				}
+				tmp2 = tmp2->next;
 			}
-			tmp2 = tmp2->next;
 		}
 		tmp = tmp->next;
 	}
@@ -51,23 +54,26 @@ static void		do_pipe_command(t_data *data)
 	tmp = data->pipe;
 	while (tmp)
 	{
-		pipe = ((t_pipe *)tmp->content)->name;
-		tmp2 = ((t_pipe *)tmp->content)->instruction;
-		while (tmp2)
+		if (((t_pipe *)tmp->content)->old != 1)
 		{
-			str = ((t_instruction *)tmp2->content)->instruction;
-			if (!ft_strcmp(str, "##start") || !ft_strcmp(str, "##end"))
+			pipe = ((t_pipe *)tmp->content)->name;
+			tmp2 = ((t_pipe *)tmp->content)->instruction;
+			while (tmp2)
 			{
-				//free everything
-				ft_error("ERROR", 2);
+				str = ((t_instruction *)tmp2->content)->instruction;
+				if (!ft_strcmp(str, "##start") || !ft_strcmp(str, "##end"))
+				{
+					//free everything
+					ft_error("ERROR", 2);
+				}
+				i = -1;
+				while (++i < OPTION)
+				{
+					if (!ft_strcmp(str, get_command(0)[i].name))
+						get_command(0)[i].choice(data, pipe, "");
+				}
+				tmp2 = tmp2->next;
 			}
-			i = -1;
-			while (++i < OPTION)
-			{
-				if (!ft_strcmp(str, get_command(0)[i].name))
-					get_command(0)[i].choice(data, pipe, "");
-			}
-			tmp2 = tmp2->next;
 		}
 		tmp = tmp->next;
 	}

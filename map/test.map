@@ -8,12 +8,18 @@
 ##big
 ##red
 1 5 0
+##small
+##blue
+7 1 0
 2 42 2
+##small
+##blue
+7 4 2
 6 90 11 11
 #comment
 3 12 -3
 1-6 90
-0-2
+7-2
 #comment1
 #comment2
 2-3

@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:37:45 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/05/30 17:37:26 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/05/31 19:32:30 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,13 @@ t_list		*get_instruction_node(t_list **alst, char *name1, char *name2)
 
 	(void)name2;
 	tmp = *alst;
-	while (tmp && ft_strcmp(((t_instruction*)tmp->content)->instruction, name1))
+	while (tmp)
+	{
+		if (!ft_strcmp(((t_instruction*)tmp->content)->instruction, name1))
+			return (tmp);
 		tmp = tmp->next;
-	return (tmp);
+	}
+	return (NULL);
 }
 
 t_list		*get_room_node_by_name(t_list **alst, char *name1, char *name2)
@@ -29,24 +33,30 @@ t_list		*get_room_node_by_name(t_list **alst, char *name1, char *name2)
 
 	(void)name2;
 	tmp = *alst;
-	while (tmp && ft_strcmp(((t_room *)tmp->content)->name, name1))
+	while (tmp)
+	{
+		if (((t_room *)tmp->content)->old != 1
+				&& !ft_strcmp(((t_room *)tmp->content)->name, name1))
+			return (tmp);
 		tmp = tmp->next;
-	return (tmp);
+	}
+	return (NULL);
 }
 
 t_list		*get_room_node_by_coord(t_list **alst, int x, int y)
 {
 	t_list	*tmp;
-	t_room	*room;
 
 	tmp = *alst;
-	room = (t_room *)tmp->content;
-	while (tmp && x != room->x && y != room->y)
+	while (tmp)
 	{
+		if (((t_room *)tmp->content)->old != 1
+				&& ((t_room *)tmp->content)->x == x
+				&& ((t_room *)tmp->content)->y == y)
+			return (tmp);
 		tmp = tmp->next;
-		room = (t_room *)tmp->content;
 	}
-	return (tmp);
+	return (NULL);
 }
 
 t_list		*get_pipe_node(t_list **alst, char *name1, char *name2)
@@ -69,7 +79,7 @@ t_list		*get_pipe_node(t_list **alst, char *name1, char *name2)
 			return (tmp);
 		tmp = tmp->next;
 	}
-	return (tmp);
+	return (NULL);
 }
 
 void		free_instruction_content(void *content, size_t content_size)

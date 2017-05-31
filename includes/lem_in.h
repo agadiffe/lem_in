@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/23 12:06:15 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/05/30 16:33:52 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/05/31 15:04:38 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct		s_room
 	int				room_number;
 	char			*name;
 	t_list			*instruction;
+	t_list			*all_instruction;
 	t_list			*room_pipe;
 }					t_room;
 

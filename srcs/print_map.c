@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/25 13:31:11 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/05/28 20:03:03 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/05/31 16:35:21 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,9 @@ static void		print_room(t_data *data)
 	while (tmp)
 	{
 		ft_lstiter(((t_room *)tmp->content)->instruction, print_inst);
+		ft_putendl("[+]--->");
+		ft_lstiter(((t_room *)tmp->content)->all_instruction, print_inst);
+		ft_putendl("---<");
 		ft_putstr(((t_room *)tmp->content)->name);
 		ft_putstr(" ");
 		ft_putnbr(((t_room *)tmp->content)->x);
