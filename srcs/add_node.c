@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:39:45 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/05/31 20:45:19 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/06/01 18:51:16 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,14 @@ static void		check_if_room_exist(t_data *data, t_room *room)
 	if (tmp)
 	{
 		((t_room *)tmp->content)->old = 1;
-		ft_lstadd(&room->all_instruction,
-				ft_lstmap(((t_room *)tmp->content)->instruction, copy_lst));
-		((t_room *)tmp->content)->all_instruction = room->all_instruction;
+		ft_lstaddback(&((t_room *)tmp->content)->all_instruction,
+				ft_lstmap(room->instruction, copy_lst));
+		room->all_instruction = ((t_room *)tmp->content)->all_instruction;
+	}
+	else
+	{
+		room->all_instruction = room->instruction ?
+			ft_lstmap(room->instruction, copy_lst) : NULL;
 	}
 }
 
@@ -58,7 +63,6 @@ int			add_new_room(t_data *data, char *s)
 		((t_room *)tmp->content)->room_pipe = NULL;
 		((t_room *)tmp->content)->room_number = data->nbr_room++;
 		((t_room *)tmp->content)->instruction = data->instruction;
-		((t_room *)tmp->content)->all_instruction = NULL;
 		data->instruction = NULL;
 		check_if_room_exist(data, (t_room *)tmp->content);
 		ft_lstaddback(&data->room, tmp);
