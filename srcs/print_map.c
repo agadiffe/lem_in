@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/25 13:31:11 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/05/31 16:35:21 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/06/02 18:25:46 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,10 @@ static void		print_room(t_data *data)
 		ft_putnbr(((t_room *)tmp->content)->x);
 		ft_putstr(" ");
 		ft_putnbr_endl(((t_room *)tmp->content)->y);
+		ft_putstr("start: ");
+		ft_putnbr_endl(((t_room *)tmp->content)->start);
+		ft_putstr("end: ");
+		ft_putnbr_endl(((t_room *)tmp->content)->end);
 		ft_lstiter(((t_room *)tmp->content)->room_pipe, print_pipe_inside_room);
 		tmp = tmp->next;
 	}

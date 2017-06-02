@@ -6,39 +6,37 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:41:45 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/05/30 16:45:02 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/06/02 17:21:07 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 #include <stdlib.h>
 
+static void		reset_start_room(t_list *elem)
+{
+	((t_room *)elem->content)->start = 0;
+}
+
 static void		command_start(t_data *data, char *room1, char *room2)
 {
-	t_list	*tmp;
 	t_list	*tmp_room;
 
-	tmp = data->room;
-	while (tmp)
-	{
-		((t_room *)tmp->content)->start = 0;
-		tmp = tmp->next;
-	}
+	ft_lstiter(data->room, reset_start_room);
 	tmp_room = get_room_node_by_name(&data->room, room1, room2);
 	((t_room *)tmp_room->content)->start = 1;
 }
 
+static void		reset_end_room(t_list *elem)
+{
+	((t_room *)elem->content)->end = 0;
+}
+
 static void		command_end(t_data *data, char *room1, char *room2)
 {
-	t_list	*tmp;
 	t_list	*tmp_room;
 
-	tmp = data->room;
-	while (tmp)
-	{
-		((t_room *)tmp->content)->end = 0;
-		tmp = tmp->next;
-	}
+	ft_lstiter(data->room, reset_end_room);
 	tmp_room = get_room_node_by_name(&data->room, room1, room2);
 	((t_room *)tmp_room->content)->end = 1;
 }
