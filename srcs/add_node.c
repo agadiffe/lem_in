@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:39:45 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/06/01 18:51:16 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/06/04 19:01:30 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,9 @@ static void		check_if_room_exist(t_data *data, t_room *room)
 	if (tmp)
 	{
 		((t_room *)tmp->content)->old = 1;
-		ft_lstaddback(&((t_room *)tmp->content)->all_instruction,
-				ft_lstmap(room->instruction, copy_lst));
+		if (room->instruction)
+			ft_lstaddback(&((t_room *)tmp->content)->all_instruction,
+					ft_lstmap(room->instruction, copy_lst));
 		room->all_instruction = ((t_room *)tmp->content)->all_instruction;
 	}
 	else
