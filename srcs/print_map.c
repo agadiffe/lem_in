@@ -12,103 +12,74 @@
 
 #include "lem_in.h"
 
-static void		print_pipe_inside_room(t_list *elem)
-{
-	t_room		*tmp_room;
-
-	tmp_room = (t_room *)((t_room_pipe *)elem->content)->room;
-	ft_putstr("     -> pipe with: ");
-	ft_putendl(tmp_room->name);
-}
-
 static void		print_inst(t_list *elem)
 {
 	ft_putendl(((t_instruction *)elem->content)->instruction);
 }
 
-static void		print_room(t_data *data)
+static void		print_room(t_list *elem)
 {
-	t_list		*tmp;
-
-	tmp = data->room;
-	while (tmp)
-	{
-		ft_lstiter(((t_room *)tmp->content)->instruction, print_inst);
-		ft_putendl("[+]--->");
-		ft_lstiter(((t_room *)tmp->content)->all_instruction, print_inst);
-		ft_putendl("---<");
-		ft_putstr(((t_room *)tmp->content)->name);
-		ft_putstr(" ");
-		ft_putnbr(((t_room *)tmp->content)->x);
-		ft_putstr(" ");
-		ft_putnbr_endl(((t_room *)tmp->content)->y);
-		ft_putstr("start: ");
-		ft_putnbr_endl(((t_room *)tmp->content)->start);
-		ft_putstr("end: ");
-		ft_putnbr_endl(((t_room *)tmp->content)->end);
-		ft_lstiter(((t_room *)tmp->content)->room_pipe, print_pipe_inside_room);
-		tmp = tmp->next;
-	}
+	ft_lstiter(((t_room *)elem->content)->instruction, print_inst);
+	ft_putstr(((t_room *)elem->content)->name);
+	ft_putstr(" ");
+	ft_putnbr(((t_room *)elem->content)->x);
+	ft_putstr(" ");
+	ft_putnbr_endl(((t_room *)elem->content)->y);
 }
 
-static void		print_pipe(t_data *data)
+static void		print_pipe(t_list *elem)
 {
-	t_list		*tmp;
 	t_pipe		*pipe;
 
-	tmp = data->pipe;
-	while (tmp)
-	{
-		ft_lstiter(((t_pipe *)tmp->content)->instruction, print_inst);
-		ft_putendl("[+]--->");
-		ft_lstiter(((t_pipe *)tmp->content)->all_instruction, print_inst);
-		ft_putendl("---<");
-		pipe = (t_pipe *)tmp->content;
-		ft_putstr(((t_room *)pipe->room1->content)->name);
-		ft_putstr("-");
-		ft_putendl(((t_room *)pipe->room2->content)->name);
-		tmp = tmp->next;
-	}
+	ft_lstiter(((t_pipe *)elem->content)->instruction, print_inst);
+	pipe = (t_pipe *)elem->content;
+	ft_putstr(((t_room *)pipe->room1->content)->name);
+	ft_putstr("-");
+	ft_putendl(((t_room *)pipe->room2->content)->name);
 }
 
-static int		check_if_command_after_pipe(t_data *data)
+static void		check_if_command_after_pipe(t_data *data)
 {
-	t_list		*tmp;
-	char		*str;
+	t_list	*tmp;
+	t_list	*save;
+	t_list	*last_node;
+	char	*str;
 
 	if (data->instruction)
 	{
 		tmp = data->instruction;
+		save = tmp;
 		while (tmp)
 		{
 			str = ((t_instruction *)tmp->content)->instruction;
 			if (*(str + 1) == '#')
-				return (1);
+			{
+				ft_lstdel(&tmp, free_instruction_content);
+				last_node->next = NULL;
+				tmp = save;
+				return;
+			}
+			last_node = tmp;
 			tmp = tmp->next;
 		}
 	}
-	return (0);
 }
 
 static void		print_last_comment(t_list *elem)
 {
-	char		*str;
-
-	str = ((t_instruction *)elem->content)->instruction;
-	if (*(str + 1) != '#')
-		ft_putendl(str);
+	ft_putendl(((t_instruction *)elem->content)->instruction);
 }
 
 void			print_map(t_data *data)
 {
-	if (check_if_command_after_pipe(data))
-	{
-		//free everything
-		ft_error("ERROR", 1);
-	}
+	//t_list	*tmp;
+
+	check_if_command_after_pipe(data);
+	//if ((tmp = check_if_command_after_pipe(data)))
+	//	ft_lstdel(&tmp, free_instruction_content);
 	ft_putnbr_endl(data->ants);
-	print_room(data);
-	print_pipe(data);
+	ft_lstiter(data->room, print_room);
+	ft_lstiter(data->pipe, print_pipe);
 	if (data->instruction)
 		ft_lstiter(data->instruction, print_last_comment);
 }

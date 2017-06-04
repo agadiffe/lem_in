@@ -104,6 +104,10 @@ t_list				*get_instruction_node(t_list **alst, char *name1,
 											char *name2);
 void				delete_node(t_list **alst, char *room1, char *room2,
 								int choice);
+void				free_instruction_content(void *content,
+											size_t content_size);
+void				free_room_content(void *content, size_t content_size);
+void				free_pipe_content(void *content, size_t content_size);
 
 /*
 **	print_map.c
