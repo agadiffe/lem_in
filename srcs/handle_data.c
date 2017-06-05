@@ -104,9 +104,14 @@ static int		check_if_start_and_end(t_list *room)
 
 void			handle_data(t_data *data)
 {
+	t_list	*tmp;
+
 	do_room_command(data);
 	do_pipe_command(data);
 	if (!check_if_start_and_end(data->room))
 		ft_error("ERROR", 2);
 	find_path(data);
+	tmp = get_end_room(&data->room);
+	if (((t_room *)tmp->content)->path == 0)
+		ft_error("ERROR", 2);
 }

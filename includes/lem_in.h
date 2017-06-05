@@ -93,6 +93,7 @@ int					is_room(char *name);
 /*
 **	list_func.c
 */
+t_list				*get_end_room(t_list **alst);
 t_list				*get_start_room(t_list **alst);
 t_list				*get_room_node_by_name(t_list **alst, char *name);
 t_list				*get_room_node_by_coord(t_list **alst, int x, int y);

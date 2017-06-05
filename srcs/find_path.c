@@ -12,15 +12,18 @@
 
 #include "lem_in.h"
 
-static void		search_path(t_list *elem)
+static void		handle_path(t_list *elem)
 {
 	t_room_pipe		*tmp;
 	t_room_pipe		*tmp2;
 	t_list			*pipe_lst;
 
 	tmp = (t_room_pipe *)elem->content;
-	tmp->room->path++;
-	tmp->room->checked = 1;
+	if (tmp->room->checked == 0)
+	{
+		tmp->room->path++;
+		tmp->room->checked = 1;
+	}
 	pipe_lst = tmp->room->room_pipe;
 	while (pipe_lst)
 	{
@@ -29,7 +32,7 @@ static void		search_path(t_list *elem)
 		{
 			tmp2->room->checked = 1;
 			tmp2->room->path = tmp->room->path + 1;
-			ft_lstiter(pipe_lst, search_path);
+			ft_lstiter(pipe_lst, handle_path);
 		}
 		pipe_lst = pipe_lst->next;
 	}
@@ -44,5 +47,5 @@ void			find_path(t_data *data)
 	((t_room *)start->content)->checked = 1;
 	tmp = ((t_room *)start->content)->room_pipe;
 	if (tmp)
-		ft_lstiter(tmp, search_path);
+		ft_lstiter(tmp, handle_path);
 }

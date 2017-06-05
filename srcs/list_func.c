@@ -12,6 +12,20 @@
 
 #include "lem_in.h"
 
+t_list		*get_end_room(t_list **alst)
+{
+	t_list	*tmp;
+
+	tmp = *alst;
+	while (tmp)
+	{
+		if (((t_room *)tmp->content)->end == 1)
+			return (tmp);
+		tmp = tmp->next;
+	}
+	return (NULL);
+}
+
 t_list		*get_start_room(t_list **alst)
 {
 	t_list	*tmp;
