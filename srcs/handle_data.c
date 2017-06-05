@@ -12,13 +12,27 @@
 
 #include "lem_in.h"
 
+static void		command_handle(t_data *data, char *command, char *name)
+{
+	int			i;
+
+	i = -1;
+	while (++i < OPTION)
+	{
+		if (!ft_strcmp(command, get_command(0)[i].name))
+		{
+			get_command(0)[i].choice(data, name);
+			return;
+		}
+	}
+}
+
 static void		do_room_command(t_data *data)
 {
 	t_list		*tmp;
 	t_list		*tmp2;
 	char		*str;
 	char		*room;
-	int			i;
 
 	tmp = data->room;
 	while (tmp)
@@ -30,12 +44,7 @@ static void		do_room_command(t_data *data)
 			while (tmp2)
 			{
 				str = ((t_instruction *)tmp2->content)->instruction;
-				i = -1;
-				while (++i < OPTION)
-				{
-					if (!ft_strcmp(str, get_command(0)[i].name))
-						get_command(0)[i].choice(data, room, "");
-				}
+				command_handle(data, str, room);
 				tmp2 = tmp2->next;
 			}
 		}
@@ -49,7 +58,6 @@ static void		do_pipe_command(t_data *data)
 	t_list		*tmp2;
 	char		*str;
 	char		*pipe;
-	int			i;
 
 	tmp = data->pipe;
 	while (tmp)
@@ -61,17 +69,8 @@ static void		do_pipe_command(t_data *data)
 			while (tmp2)
 			{
 				str = ((t_instruction *)tmp2->content)->instruction;
-				if (!ft_strcmp(str, "##start") || !ft_strcmp(str, "##end"))
-				{
-					//free everything
-					ft_error("ERROR", 2);
-				}
-				i = -1;
-				while (++i < OPTION)
-				{
-					if (!ft_strcmp(str, get_command(0)[i].name))
-						get_command(0)[i].choice(data, pipe, "");
-				}
+				if (ft_strcmp(str, "##start") && ft_strcmp(str, "##end"))
+					command_handle(data, str, pipe);
 				tmp2 = tmp2->next;
 			}
 		}

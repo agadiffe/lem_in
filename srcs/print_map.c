@@ -72,11 +72,7 @@ static void		print_last_comment(t_list *elem)
 
 void			print_map(t_data *data)
 {
-	//t_list	*tmp;
-
 	check_if_command_after_pipe(data);
-	//if ((tmp = check_if_command_after_pipe(data)))
-	//	ft_lstdel(&tmp, free_instruction_content);
 	ft_putnbr_endl(data->ants);
 	ft_lstiter(data->room, print_room);
 	ft_lstiter(data->pipe, print_pipe);

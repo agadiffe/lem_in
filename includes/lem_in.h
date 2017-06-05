@@ -18,9 +18,6 @@
 
 # define OPTION			2
 
-# define ROOM			0
-# define PIPE			1
-
 typedef struct		s_instruction
 {
 	char			*instruction;
@@ -71,7 +68,7 @@ typedef struct		s_data
 
 typedef struct		s_command
 {
-	void			(*choice)(t_data *, char *, char *);
+	void			(*choice)(t_data *, char *);
 	char			*name;
 }					t_command;
 
@@ -96,14 +93,10 @@ int					is_room(char *name);
 /*
 **	list_func.c
 */
-t_list				*get_room_node_by_name(t_list **alst, char *name1,
-											char *name2);
+t_list				*get_room_node_by_name(t_list **alst, char *name);
 t_list				*get_room_node_by_coord(t_list **alst, int x, int y);
 t_list				*get_pipe_node(t_list **alst, char *name1, char *name2);
-t_list				*get_instruction_node(t_list **alst, char *name1,
-											char *name2);
-void				delete_node(t_list **alst, char *room1, char *room2,
-								int choice);
+t_list				*get_instruction_node(t_list **alst, char *name);
 void				free_instruction_content(void *content,
 											size_t content_size);
 void				free_room_content(void *content, size_t content_size);

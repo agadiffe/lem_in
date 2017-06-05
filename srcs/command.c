@@ -18,12 +18,12 @@ static void		reset_start_room(t_list *elem)
 	((t_room *)elem->content)->start = 0;
 }
 
-static void		command_start(t_data *data, char *room1, char *room2)
+static void		command_start(t_data *data, char *room)
 {
 	t_list	*tmp_room;
 
 	ft_lstiter(data->room, reset_start_room);
-	tmp_room = get_room_node_by_name(&data->room, room1, room2);
+	tmp_room = get_room_node_by_name(&data->room, room);
 	((t_room *)tmp_room->content)->start = 1;
 }
 
@@ -32,12 +32,12 @@ static void		reset_end_room(t_list *elem)
 	((t_room *)elem->content)->end = 0;
 }
 
-static void		command_end(t_data *data, char *room1, char *room2)
+static void		command_end(t_data *data, char *room)
 {
 	t_list	*tmp_room;
 
 	ft_lstiter(data->room, reset_end_room);
-	tmp_room = get_room_node_by_name(&data->room, room1, room2);
+	tmp_room = get_room_node_by_name(&data->room, room);
 	((t_room *)tmp_room->content)->end = 1;
 }
 

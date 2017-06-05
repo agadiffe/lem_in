@@ -23,7 +23,7 @@ static void		check_if_room_exist(t_data *data, t_room *room)
 	t_list	*tmp_coord;
 	t_list	*tmp;
 
-	tmp_name = get_room_node_by_name(&data->room, room->name, "");
+	tmp_name = get_room_node_by_name(&data->room, room->name);
 	tmp_coord = get_room_node_by_coord(&data->room, room->x, room->y);
 	tmp = tmp_name ? tmp_name : tmp_coord;
 	if (tmp)
@@ -94,10 +94,10 @@ int			add_new_pipe(t_data *data, char *s)
 	tmp = ft_lstnew(&data->pipe_content, sizeof(t_pipe));
 	((t_pipe *)tmp->content)->name = s;
 	((t_pipe *)tmp->content)->old = 0;
-	tmp_room = get_room_node_by_name(&data->room, str + 1, "");
+	tmp_room = get_room_node_by_name(&data->room, str + 1);
 	((t_pipe *)tmp->content)->room2 = tmp_room;
 	*str = '\0';
-	tmp_room = get_room_node_by_name(&data->room, s, "");
+	tmp_room = get_room_node_by_name(&data->room, s);
 	((t_pipe *)tmp->content)->room1 = tmp_room;
 	bad_data = ((t_pipe *)tmp->content)->room1
 					&& ((t_pipe *)tmp->content)->room2 ? 0 : 1;
