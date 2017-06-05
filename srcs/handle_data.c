@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/06 19:34:06 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/06/02 18:29:38 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/06/05 18:42:33 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,12 @@ static void		do_pipe_command(t_data *data)
 			while (tmp2)
 			{
 				str = ((t_instruction *)tmp2->content)->instruction;
-				if (ft_strcmp(str, "##start") && ft_strcmp(str, "##end"))
-					command_handle(data, str, pipe);
+				if (!ft_strcmp(str, "##start") || !ft_strcmp(str, "##end"))
+				{
+					//free everything
+					ft_error("ERROR", 3);
+				}
+				command_handle(data, str, pipe);
 				tmp2 = tmp2->next;
 			}
 		}
@@ -104,4 +108,5 @@ void			handle_data(t_data *data)
 	do_pipe_command(data);
 	if (!check_if_start_and_end(data->room))
 		ft_error("ERROR", 2);
+	find_path(data);
 }

@@ -6,7 +6,7 @@
 #    By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/05/14 20:31:10 by agadiffe          #+#    #+#              #
-#    Updated: 2017/04/06 19:33:55 by agadiffe         ###   ########.fr        #
+#    Updated: 2017/06/05 18:43:58 by agadiffe         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,8 @@ SRC_NAME = main.c			\
 		   command.c		\
 		   is_room.c		\
 		   list_func.c		\
-		   handle_data.c
+		   handle_data.c	\
+		   find_path.c
 
 OBJ_PATH = ./obj/
 OBJ_NAME = $(SRC_NAME:.c=.o)

@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/23 12:06:15 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/05/31 15:04:38 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/06/05 20:05:23 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <stddef.h>
 # include "libft.h"
 
-# define OPTION			2
+# define OPTION		2
 
 typedef struct		s_instruction
 {
@@ -25,12 +25,13 @@ typedef struct		s_instruction
 
 typedef struct		s_room
 {
+	int				path;
+	int				checked;
 	int				old;
 	int				start;
 	int				end;
 	int				x;
 	int				y;
-	int				room_number;
 	char			*name;
 	t_list			*instruction;
 	t_list			*all_instruction;
@@ -56,7 +57,6 @@ typedef struct		s_data
 {
 	int				ants;
 	int				get_room_data;
-	int				nbr_room;
 	t_room			room_content;
 	t_pipe			pipe_content;
 	t_instruction	instruction_content;
@@ -93,6 +93,7 @@ int					is_room(char *name);
 /*
 **	list_func.c
 */
+t_list				*get_start_room(t_list **alst);
 t_list				*get_room_node_by_name(t_list **alst, char *name);
 t_list				*get_room_node_by_coord(t_list **alst, int x, int y);
 t_list				*get_pipe_node(t_list **alst, char *name1, char *name2);
@@ -111,5 +112,10 @@ void				print_map(t_data *data);
 **	handle_data.c
 */
 void				handle_data(t_data *data);
+
+/*
+**	find_path.c
+*/
+void				find_path(t_data *data);
 
 #endif

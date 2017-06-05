@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/23 11:19:45 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/04/10 17:40:19 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/06/05 18:42:55 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ int			get_data(t_data *data, char *s)
 void		init_data(t_data *data)
 {
 	data->get_room_data = 1;
-	data->nbr_room = 0;
 	data->ants = get_ants_number();
 	data->room = NULL;
 	data->pipe = NULL;

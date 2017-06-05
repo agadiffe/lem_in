@@ -6,15 +6,29 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:37:45 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/05/31 19:32:30 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/06/05 17:48:39 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
+t_list		*get_start_room(t_list **alst)
+{
+	t_list	*tmp;
+
+	tmp = *alst;
+	while (tmp)
+	{
+		if (((t_room *)tmp->content)->start == 1)
+			return (tmp);
+		tmp = tmp->next;
+	}
+	return (NULL);
+}
+
 t_list		*get_instruction_node(t_list **alst, char *name)
 {
-	t_list			*tmp;
+	t_list	*tmp;
 
 	tmp = *alst;
 	while (tmp)

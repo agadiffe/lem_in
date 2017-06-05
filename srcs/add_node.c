@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:39:45 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/06/04 19:01:30 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/06/05 20:05:37 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ int			add_new_room(t_data *data, char *s)
 		((t_room *)tmp->content)->end = 0;
 		((t_room *)tmp->content)->name = s;
 		((t_room *)tmp->content)->room_pipe = NULL;
-		((t_room *)tmp->content)->room_number = data->nbr_room++;
+		((t_room *)tmp->content)->path = 0;
+		((t_room *)tmp->content)->checked = 0;
 		((t_room *)tmp->content)->instruction = data->instruction;
 		data->instruction = NULL;
 		check_if_room_exist(data, (t_room *)tmp->content);

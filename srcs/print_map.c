@@ -6,11 +6,20 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/25 13:31:11 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/06/02 18:25:46 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/06/05 19:54:48 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
+
+static void		print_pipe_inside_room(t_list *elem)
+{
+	t_room		*tmp_room;
+
+	tmp_room = (t_room *)((t_room_pipe *)elem->content)->room;
+	ft_putstr("     -> pipe with: ");
+	ft_putendl(tmp_room->name);
+}
 
 static void		print_inst(t_list *elem)
 {
@@ -20,11 +29,14 @@ static void		print_inst(t_list *elem)
 static void		print_room(t_list *elem)
 {
 	ft_lstiter(((t_room *)elem->content)->instruction, print_inst);
+	ft_putstr("[+] ");
+	ft_putnbr_endl(((t_room *)elem->content)->path);
 	ft_putstr(((t_room *)elem->content)->name);
 	ft_putstr(" ");
 	ft_putnbr(((t_room *)elem->content)->x);
 	ft_putstr(" ");
 	ft_putnbr_endl(((t_room *)elem->content)->y);
+	ft_lstiter(((t_room *)elem->content)->room_pipe, print_pipe_inside_room);
 }
 
 static void		print_pipe(t_list *elem)
