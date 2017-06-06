@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:39:45 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/06/05 20:05:37 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/06/06 20:44:32 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,27 @@ void		add_new_instruction(t_data *data, char *s)
 	((t_instruction *)tmp->content)->instruction = s;
 }
 
+static int	check_if_start_or_end(t_list *inst)
+{
+	t_list	*tmp;
+	t_list	*save;
+
+	tmp = inst;
+	while (tmp)
+	{
+		if (!ft_strcmp(((t_instruction *)tmp->content)->instruction, "##start")
+				|| !ft_strcmp(((t_instruction *)tmp->content)->instruction, "##end"))
+		{
+			ft_lstdel(&tmp, free_instruction_content);
+			save->next = NULL;
+			return (1);
+		}
+		save = tmp;
+		tmp = tmp->next;
+	}
+	return (0);
+}
+
 int			add_new_pipe(t_data *data, char *s)
 {
 	char		*str;
@@ -108,19 +129,30 @@ int			add_new_pipe(t_data *data, char *s)
 		data->instruction = NULL;
 		if (((t_pipe *)tmp->content)->instruction)
 		{
-			if ((tmp_pipe = get_pipe_node(&data->pipe, s, str + 1)))
+			if (check_if_start_or_end(((t_pipe *)tmp->content)->instruction))
 			{
-				ft_lstaddback(&((t_pipe *)tmp_pipe->content)->all_instruction,
-							ft_lstmap(((t_pipe *)tmp->content)->instruction,
-									copy_lst));
-				((t_pipe *)tmp->content)->all_instruction =
-					((t_pipe *)tmp_pipe->content)->all_instruction;
-				((t_pipe *)tmp->content)->old = 1;
+				data->stop_get_data = 1;
+				if (((t_pipe *)tmp->content)->instruction)
+					data->instruction = ((t_pipe *)tmp->content)->instruction;
+				//need to free more content
+				ft_memdel((void**)&tmp);
 			}
 			else
 			{
-				((t_pipe *)tmp->content)->all_instruction =
-					ft_lstmap(((t_pipe *)tmp->content)->instruction, copy_lst);
+				if ((tmp_pipe = get_pipe_node(&data->pipe, s, str + 1)))
+				{
+					ft_lstaddback(&((t_pipe *)tmp_pipe->content)->all_instruction,
+								ft_lstmap(((t_pipe *)tmp->content)->instruction,
+										copy_lst));
+					((t_pipe *)tmp->content)->all_instruction =
+						((t_pipe *)tmp_pipe->content)->all_instruction;
+					((t_pipe *)tmp->content)->old = 1;
+				}
+				else
+				{
+					((t_pipe *)tmp->content)->all_instruction =
+						ft_lstmap(((t_pipe *)tmp->content)->instruction, copy_lst);
+				}
 			}
 		}
 		else
@@ -128,7 +160,10 @@ int			add_new_pipe(t_data *data, char *s)
 		ft_lstaddback(&data->pipe, tmp);
 	}
 	else
+	{
+		//need to free more content
 		ft_memdel((void**)&tmp);
+	}
 	*str = '-';
 	return (bad_data ? 1 : 0);
 }

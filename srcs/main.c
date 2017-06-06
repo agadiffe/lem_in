@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/23 11:19:45 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/06/05 18:42:55 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/06/06 20:29:02 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ int			get_data(t_data *data, char *s)
 void		init_data(t_data *data)
 {
 	data->get_room_data = 1;
+	data->stop_get_data = 0;
 	data->ants = get_ants_number();
 	data->room = NULL;
 	data->pipe = NULL;
@@ -57,21 +58,20 @@ int			main(int ac, char **av)
 {
 	char		*line;
 	t_data		data;
-	int			stop_get_data;
 
 	(void)ac;
 	(void)av;
-	stop_get_data = 0;
 	init_data(&data);
 	if (data.ants == 0)
 		ft_error("ERROR", 1);
-	while (!stop_get_data && ft_get_next_line(0, &line) > 0)
+	while (!data.stop_get_data && ft_get_next_line(0, &line) > 0)
 	{
 		if (get_data(&data, line))
-			stop_get_data = 1;
+			data.stop_get_data = 1;
 	}
 	add_pipe_to_room_list(&data);
 	handle_data(&data);
 	print_map(&data);
+	print_ants_path(&data);
 	return (0);
 }

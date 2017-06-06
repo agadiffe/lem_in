@@ -6,7 +6,7 @@
 #    By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/05/14 20:31:10 by agadiffe          #+#    #+#              #
-#    Updated: 2017/06/05 18:43:58 by agadiffe         ###   ########.fr        #
+#    Updated: 2017/06/06 20:30:24 by agadiffe         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,13 +19,14 @@ CC = gcc
 CFLAGS += -Wall -Werror -Wextra
 
 SRC_PATH = ./srcs/
-SRC_NAME = main.c			\
-		   print_map.c		\
-		   add_node.c		\
-		   command.c		\
-		   is_room.c		\
-		   list_func.c		\
-		   handle_data.c	\
+SRC_NAME = main.c				\
+		   print_map.c			\
+		   add_node.c			\
+		   command.c			\
+		   is_room.c			\
+		   list_func.c			\
+		   handle_data.c		\
+		   print_ants_path.c	\
 		   find_path.c
 
 OBJ_PATH = ./obj/

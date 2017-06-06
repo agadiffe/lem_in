@@ -27,7 +27,11 @@
 2-3
 #comment3
 2-3
+3-1
 #comment4
+##random
+#yolo
+##start
 3-2
 #comment5
 3-2
@@ -35,6 +39,6 @@
 3-1
 #comment_end1
 #command_end1
-#
 ##salut
+#
 #comment_end2

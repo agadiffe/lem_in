@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/23 12:06:15 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/06/05 20:05:23 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/06/06 20:27:53 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ typedef struct		s_data
 {
 	int				ants;
 	int				get_room_data;
+	int				stop_get_data;
 	t_room			room_content;
 	t_pipe			pipe_content;
 	t_instruction	instruction_content;
@@ -118,5 +119,10 @@ void				handle_data(t_data *data);
 **	find_path.c
 */
 void				find_path(t_data *data);
+
+/*
+**	print_ants_path.c
+*/
+void				print_ants_path(t_data *data);
 
 #endif

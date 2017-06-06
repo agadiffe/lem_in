@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/06 19:34:06 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/06/05 18:42:33 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/06/06 20:29:52 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,24 +57,17 @@ static void		do_pipe_command(t_data *data)
 	t_list		*tmp;
 	t_list		*tmp2;
 	char		*str;
-	char		*pipe;
 
 	tmp = data->pipe;
 	while (tmp)
 	{
 		if (((t_pipe *)tmp->content)->old != 1)
 		{
-			pipe = ((t_pipe *)tmp->content)->name;
 			tmp2 = ((t_pipe *)tmp->content)->all_instruction;
 			while (tmp2)
 			{
 				str = ((t_instruction *)tmp2->content)->instruction;
-				if (!ft_strcmp(str, "##start") || !ft_strcmp(str, "##end"))
-				{
-					//free everything
-					ft_error("ERROR", 3);
-				}
-				command_handle(data, str, pipe);
+				command_handle(data, str, ((t_pipe *)tmp->content)->name);
 				tmp2 = tmp2->next;
 			}
 		}
@@ -104,14 +97,9 @@ static int		check_if_start_and_end(t_list *room)
 
 void			handle_data(t_data *data)
 {
-	t_list	*tmp;
-
 	do_room_command(data);
 	do_pipe_command(data);
 	if (!check_if_start_and_end(data->room))
 		ft_error("ERROR", 2);
 	find_path(data);
-	tmp = get_end_room(&data->room);
-	if (((t_room *)tmp->content)->path == 0)
-		ft_error("ERROR", 2);
 }
