@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:41:45 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/06/02 17:21:07 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/06/07 18:51:17 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ t_command		*get_command(int to_free)
 			type[1] = (t_command){ &command_end, "##end" };
 		}
 		else
-			ft_error("Malloc error", 2);
+			ft_error("Malloc error", 42);
 	}
 	if (to_free)
 		free(type);

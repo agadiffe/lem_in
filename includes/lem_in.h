@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/23 12:06:15 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/06/06 20:27:53 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/06/07 20:25:13 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,6 @@ void				handle_data(t_data *data);
 **	find_path.c
 */
 void				find_path(t_data *data);
-void				create_shorter_path_list(t_data *data);
 
 /*
 **	print_ants_path.c

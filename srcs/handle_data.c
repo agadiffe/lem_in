@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/06 19:34:06 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/06/06 20:29:52 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/06/07 18:39:21 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,6 @@ void			handle_data(t_data *data)
 	do_room_command(data);
 	do_pipe_command(data);
 	if (!check_if_start_and_end(data->room))
-		ft_error("ERROR", 2);
+		ft_error("ERROR", 3);
 	find_path(data);
-	create_shorter_path_list(data);
 }

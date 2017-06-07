@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/05 17:23:34 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/06/05 20:39:03 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/06/07 18:23:59 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static t_list	*get_lower_path(t_list **room_pipe)
 	return (lower);
 }
 
-void			create_shorter_path_list(t_data *data)
+static void		create_shorter_path_list(t_data *data)
 {
 	t_list	*tmp;
 	t_list	*new;
@@ -98,5 +98,8 @@ void			find_path(t_data *data)
 	((t_room *)start->content)->checked = 1;
 	tmp = ((t_room *)start->content)->room_pipe;
 	if (tmp)
+	{
 		ft_lstiter(tmp, handle_path);
+		create_shorter_path_list(data);
+	}
 }
