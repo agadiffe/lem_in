@@ -12,6 +12,57 @@
 
 #include "lem_in.h"
 
+static t_list	*get_lower_path(t_list **room_pipe)
+{
+	t_list	*tmp;
+	t_list	*lower;
+	int		path;
+	int		tmp_path;
+
+	tmp = *room_pipe;
+	path = ((t_room_pipe *)tmp->content)->room->path;
+	lower = tmp;
+	tmp = tmp->next;
+	while (tmp)
+	{
+		if (((t_room_pipe *)tmp->content)->room->old != 1)
+		{
+			tmp_path = ((t_room_pipe *)tmp->content)->room->path;
+			if (tmp_path < path)
+			{
+				path = tmp_path;
+				lower = tmp;
+			}
+		}
+		tmp = tmp->next;
+	}
+	return (lower);
+}
+
+void			create_shorter_path_list(t_data *data)
+{
+	t_list	*tmp;
+	t_list	*new;
+
+	tmp = get_end_room(&data->room);
+	if (((t_room *)tmp->content)->path == 0)
+		ft_error("ERROR", 2);
+	new = ft_lstnew(&data->room_pipe_content, sizeof(t_room_pipe));
+	((t_room_pipe *)new->content)->room = (t_room *)tmp->content;
+	ft_lstadd(&data->path, new);
+	tmp = get_lower_path(&((t_room *)tmp->content)->room_pipe);
+	new = ft_lstnew(&data->room_pipe_content, sizeof(t_room_pipe));
+	((t_room_pipe *)new->content)->room = ((t_room_pipe *)tmp->content)->room;
+	ft_lstadd(&data->path, new);
+	while (((t_room_pipe *)tmp->content)->room->start != 1)
+	{
+		tmp = get_lower_path(&((t_room_pipe *)tmp->content)->room->room_pipe);
+		new = ft_lstnew(&data->room_pipe_content, sizeof(t_room_pipe));
+		((t_room_pipe *)new->content)->room = ((t_room_pipe *)tmp->content)->room;
+		ft_lstadd(&data->path, new);
+	}
+}
+
 static void		handle_path(t_list *elem)
 {
 	t_room_pipe		*tmp;

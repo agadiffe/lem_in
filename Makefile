@@ -15,7 +15,7 @@
 # ----------------------------------------------------------------------------
 NAME = lem-in
 
-CC = gcc
+CC = clang
 CFLAGS += -Wall -Werror -Wextra
 
 SRC_PATH = ./srcs/

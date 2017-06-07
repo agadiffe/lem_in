@@ -65,6 +65,7 @@ typedef struct		s_data
 	t_list			*room;
 	t_list			*pipe;
 	t_list			*instruction;
+	t_list			*path;
 }					t_data;
 
 typedef struct		s_command
@@ -119,6 +120,7 @@ void				handle_data(t_data *data);
 **	find_path.c
 */
 void				find_path(t_data *data);
+void				create_shorter_path_list(t_data *data);
 
 /*
 **	print_ants_path.c

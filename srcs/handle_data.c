@@ -102,4 +102,5 @@ void			handle_data(t_data *data)
 	if (!check_if_start_and_end(data->room))
 		ft_error("ERROR", 2);
 	find_path(data);
+	create_shorter_path_list(data);
 }
