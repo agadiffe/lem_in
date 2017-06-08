@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/05 17:23:34 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/06/07 18:23:59 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/06/08 17:40:28 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,18 @@ static t_list	*get_lower_path(t_list **room_pipe)
 	return (lower);
 }
 
+static t_list	*add_path(t_data *data, t_list *pipe_list)
+{
+	t_list	*tmp;
+	t_list	*new;
+
+	tmp = get_lower_path(&pipe_list);
+	new = ft_lstnew(&data->room_pipe_content, sizeof(t_room_pipe));
+	((t_room_pipe *)new->content)->room = ((t_room_pipe *)tmp->content)->room;
+	ft_lstadd(&data->path, new);
+	return (tmp);
+}
+
 static void		create_shorter_path_list(t_data *data)
 {
 	t_list	*tmp;
@@ -50,17 +62,9 @@ static void		create_shorter_path_list(t_data *data)
 	new = ft_lstnew(&data->room_pipe_content, sizeof(t_room_pipe));
 	((t_room_pipe *)new->content)->room = (t_room *)tmp->content;
 	ft_lstadd(&data->path, new);
-	tmp = get_lower_path(&((t_room *)tmp->content)->room_pipe);
-	new = ft_lstnew(&data->room_pipe_content, sizeof(t_room_pipe));
-	((t_room_pipe *)new->content)->room = ((t_room_pipe *)tmp->content)->room;
-	ft_lstadd(&data->path, new);
+	tmp = add_path(data, ((t_room *)tmp->content)->room_pipe); 
 	while (((t_room_pipe *)tmp->content)->room->start != 1)
-	{
-		tmp = get_lower_path(&((t_room_pipe *)tmp->content)->room->room_pipe);
-		new = ft_lstnew(&data->room_pipe_content, sizeof(t_room_pipe));
-		((t_room_pipe *)new->content)->room = ((t_room_pipe *)tmp->content)->room;
-		ft_lstadd(&data->path, new);
-	}
+		tmp = add_path(data, ((t_room_pipe *)tmp->content)->room->room_pipe);
 }
 
 static void		handle_path(t_list *elem)
