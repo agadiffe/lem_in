@@ -14,37 +14,35 @@
 
 static void		print_ants_in_room(t_list *elem)
 {
-	if (((t_room_pipe *)elem->content)->room->ants != 0)
+	if (((t_room_pipe *)elem->content)->room->ants > 0)
 	{
 		ft_putstr("L");
 		ft_putnbr(((t_room_pipe *)elem->content)->room->ants);
 		ft_putstr("-");
 		ft_putstr(((t_room_pipe *)elem->content)->room->name);
-		ft_putstr(" ");
+		if (elem->next && ((t_room_pipe *)elem->next->content)->room->ants > 0)
+			ft_putstr(" ");
 	}
 }
 
-static void		print(t_list *elem)
-{
-	ft_putendl(((t_room_pipe *)elem->content)->room->name);
-}
-
-static void		move_ants(t_list *path, int i)
+static void		move_ants(t_list *path, int ants)
 {
 	t_list	*tmp;
-	int		previous;
+	int		save;
 
 	tmp = path;
-	previous = 0;
+	save = 1;
 	while (tmp)
 	{
-		if (((t_room_pipe *)tmp->content)->room->ants == 0)
+		if (((t_room_pipe *)tmp->content)->room->ants == 0
+				|| ((t_room_pipe *)tmp->content)->room->end)
 		{
-			((t_room_pipe *)tmp->content)->room->ants = i;
+			((t_room_pipe *)tmp->content)->room->ants = save;
 			return ;
 		}
-		((t_room_pipe *)tmp->content)->room->ants = i;
-		previous = ((t_room_pipe *)tmp->content)->room->ants;
+		save = ((t_room_pipe *)tmp->content)->room->ants;
+		((t_room_pipe *)tmp->content)->room->ants =
+			save < ants && save > 0 ? save + 1 : -1;
 		tmp = tmp->next;
 	}
 }
@@ -53,17 +51,13 @@ void			print_ants_path(t_data *data)
 {
 	t_list	*end_node;
 	t_room	*end;
-	int		i;
 
-	ft_lstiter(data->path, print);
-	i = 1;
 	end_node = get_end_room(&data->room);
 	end = (t_room *)end_node->content;
 	while (end->ants < data->ants)
 	{
-		move_ants(data->path, i);
+		move_ants(data->path, data->ants);
 		ft_lstiter(data->path, print_ants_in_room);
 		ft_putendl("");
-		i++;
 	}
 }

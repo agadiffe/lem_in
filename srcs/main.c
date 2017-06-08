@@ -52,6 +52,7 @@ void		init_data(t_data *data)
 	data->room = NULL;
 	data->pipe = NULL;
 	data->instruction = NULL;
+	data->path = NULL;
 }
 
 int			main(int ac, char **av)
