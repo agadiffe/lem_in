@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/23 12:06:15 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/06/07 20:25:13 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/06/08 18:47:10 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ typedef struct		s_instruction
 
 typedef struct		s_room
 {
+	int				ants;
 	int				path;
 	int				checked;
 	int				old;

@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:39:45 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/06/06 20:44:32 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/06/08 18:49:16 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ int			add_new_room(t_data *data, char *s)
 		str = ft_strrchr(s, ' ');
 		((t_room *)tmp->content)->x = ft_atoi(str);
 		*str = '\0';
+		((t_room *)tmp->content)->ants = 0;
 		((t_room *)tmp->content)->old = 0;
 		((t_room *)tmp->content)->start = 0;
 		((t_room *)tmp->content)->end = 0;
