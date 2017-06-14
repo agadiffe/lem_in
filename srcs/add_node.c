@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:39:45 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/06/08 18:49:16 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/06/14 20:32:21 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,33 @@ static void		check_if_room_exist(t_data *data, t_room *room)
 	}
 }
 
-int			add_new_room(t_data *data, char *s)
+static void		init_coord_new_room(int *room_coord, char *s)
 {
 	char		*str;
+
+	str = ft_strrchr(s, ' ');
+	*room_coord = ft_atoi(str);
+	*str = '\0';
+}
+
+static void		init_data_new_room(t_data *data, t_room *room, char *s)
+{
+	init_coord_new_room(&room->y, s);
+	init_coord_new_room(&room->x, s);
+	room->ants = 0;
+	room->old = 0;
+	room->start = 0;
+	room->end = 0;
+	room->name = s;
+	room->room_pipe = NULL;
+	room->path = 0;
+	room->checked = 0;
+	room->instruction = data->instruction;
+	data->instruction = NULL;
+}
+
+int				add_new_room(t_data *data, char *s)
+{
 	t_list		*tmp;
 	int			bad_data;
 
@@ -51,22 +75,7 @@ int			add_new_room(t_data *data, char *s)
 	if (*s != 'L')
 	{
 		tmp = ft_lstnew(&data->room_content, sizeof(t_room));
-		str = ft_strrchr(s, ' ');
-		((t_room *)tmp->content)->y = ft_atoi(str);
-		*str = '\0';
-		str = ft_strrchr(s, ' ');
-		((t_room *)tmp->content)->x = ft_atoi(str);
-		*str = '\0';
-		((t_room *)tmp->content)->ants = 0;
-		((t_room *)tmp->content)->old = 0;
-		((t_room *)tmp->content)->start = 0;
-		((t_room *)tmp->content)->end = 0;
-		((t_room *)tmp->content)->name = s;
-		((t_room *)tmp->content)->room_pipe = NULL;
-		((t_room *)tmp->content)->path = 0;
-		((t_room *)tmp->content)->checked = 0;
-		((t_room *)tmp->content)->instruction = data->instruction;
-		data->instruction = NULL;
+		init_data_new_room(data, (t_room *)tmp->content, s);
 		check_if_room_exist(data, (t_room *)tmp->content);
 		ft_lstaddback(&data->room, tmp);
 	}
@@ -75,7 +84,7 @@ int			add_new_room(t_data *data, char *s)
 	return (bad_data ? 1 : 0);
 }
 
-void		add_new_instruction(t_data *data, char *s)
+void			add_new_instruction(t_data *data, char *s)
 {
 	t_list		*tmp;
 
@@ -84,16 +93,17 @@ void		add_new_instruction(t_data *data, char *s)
 	((t_instruction *)tmp->content)->instruction = s;
 }
 
-static int	check_if_start_or_end(t_list *inst)
+static int		check_if_start_or_end(t_list *inst)
 {
+	char	*tmp_inst;
 	t_list	*tmp;
 	t_list	*save;
 
 	tmp = inst;
 	while (tmp)
 	{
-		if (!ft_strcmp(((t_instruction *)tmp->content)->instruction, "##start")
-				|| !ft_strcmp(((t_instruction *)tmp->content)->instruction, "##end"))
+		tmp_inst = ((t_instruction *)tmp->content)->instruction;
+		if (!ft_strcmp(tmp_inst, "##start") || !ft_strcmp(tmp_inst, "##end"))
 		{
 			ft_lstdel(&tmp, free_instruction_content);
 			save->next = NULL;
@@ -105,71 +115,91 @@ static int	check_if_start_or_end(t_list *inst)
 	return (0);
 }
 
-int			add_new_pipe(t_data *data, char *s)
+static void		merge_instruction(t_data *data, t_pipe *new_pipe,
+									char *s, char *str)
+{
+	t_list		*pipe;
+
+	if ((pipe = get_pipe_node(&data->pipe, s, str + 1)))
+	{
+		ft_lstaddback(&((t_pipe *)pipe->content)->all_instruction,
+					ft_lstmap(new_pipe->instruction, copy_lst));
+		new_pipe->all_instruction =
+			((t_pipe *)pipe->content)->all_instruction;
+		new_pipe->old = 1;
+	}
+	else
+	{
+		new_pipe->all_instruction =
+			ft_lstmap(new_pipe->instruction, copy_lst);
+	}
+}
+
+static int		handle_pipe_instruction(t_data *data, t_pipe *new_pipe,
+										char *s, char *str)
+{
+	new_pipe->instruction = data->instruction;
+	data->instruction = NULL;
+	if (new_pipe->instruction)
+	{
+		if (check_if_start_or_end(new_pipe->instruction))
+		{
+			data->stop_get_data = 1;
+			data->instruction = new_pipe->instruction;
+			return (1);
+		}
+		else
+			merge_instruction(data, new_pipe, s, str);
+	}
+	else
+		new_pipe->all_instruction = NULL;
+	return (0);
+}
+
+static void		init_room_new_pipe(t_data *data, char *str,
+									t_list **new_pipe_room)
+{
+	t_list		*room;
+
+	room = get_room_node_by_name(&data->room, str);
+	*new_pipe_room = room;
+}
+
+static void		init_data_new_pipe(t_data *data, char *s, char *str,
+									t_pipe *new_pipe)
+{
+	new_pipe->name = s;
+	new_pipe->old = 0;
+	init_room_new_pipe(data, str + 1, &new_pipe->room2);
+	*str = '\0';
+	init_room_new_pipe(data, s, &new_pipe->room1);
+}
+
+int				add_new_pipe(t_data *data, char *s)
 {
 	char		*str;
 	t_list		*tmp;
-	t_list		*tmp_room;
-	t_list		*tmp_pipe;
+	t_pipe		*new_pipe;
 	int			bad_data;
 
 	str = ft_strrchr(s, '-');
 	tmp = ft_lstnew(&data->pipe_content, sizeof(t_pipe));
-	((t_pipe *)tmp->content)->name = s;
-	((t_pipe *)tmp->content)->old = 0;
-	tmp_room = get_room_node_by_name(&data->room, str + 1);
-	((t_pipe *)tmp->content)->room2 = tmp_room;
-	*str = '\0';
-	tmp_room = get_room_node_by_name(&data->room, s);
-	((t_pipe *)tmp->content)->room1 = tmp_room;
-	bad_data = ((t_pipe *)tmp->content)->room1
-					&& ((t_pipe *)tmp->content)->room2 ? 0 : 1;
+	new_pipe = (t_pipe *)tmp->content;
+	init_data_new_pipe(data, s, str, new_pipe);
+	bad_data = new_pipe->room1 && new_pipe->room2 ? 0 : 1;
 	if (bad_data == 0)
 	{
-		((t_pipe *)tmp->content)->instruction = data->instruction;
-		data->instruction = NULL;
-		if (((t_pipe *)tmp->content)->instruction)
-		{
-			if (check_if_start_or_end(((t_pipe *)tmp->content)->instruction))
-			{
-				data->stop_get_data = 1;
-				if (((t_pipe *)tmp->content)->instruction)
-					data->instruction = ((t_pipe *)tmp->content)->instruction;
-				//need to free more content
-				ft_memdel((void**)&tmp);
-			}
-			else
-			{
-				if ((tmp_pipe = get_pipe_node(&data->pipe, s, str + 1)))
-				{
-					ft_lstaddback(&((t_pipe *)tmp_pipe->content)->all_instruction,
-								ft_lstmap(((t_pipe *)tmp->content)->instruction,
-										copy_lst));
-					((t_pipe *)tmp->content)->all_instruction =
-						((t_pipe *)tmp_pipe->content)->all_instruction;
-					((t_pipe *)tmp->content)->old = 1;
-				}
-				else
-				{
-					((t_pipe *)tmp->content)->all_instruction =
-						ft_lstmap(((t_pipe *)tmp->content)->instruction, copy_lst);
-				}
-			}
-		}
-		else
-			((t_pipe *)tmp->content)->all_instruction = NULL;
+		if (handle_pipe_instruction(data, new_pipe, s, str))
+			ft_memdel((void**)&tmp);
 		ft_lstaddback(&data->pipe, tmp);
 	}
 	else
-	{
-		//need to free more content
 		ft_memdel((void**)&tmp);
-	}
 	*str = '-';
 	return (bad_data ? 1 : 0);
 }
 
-int			check_if_pipe_exist(t_room *room, t_room *new_pipe)
+int				check_if_pipe_exist(t_room *room, t_room *new_pipe)
 {
 	t_list	*tmp;
 
@@ -183,7 +213,7 @@ int			check_if_pipe_exist(t_room *room, t_room *new_pipe)
 	return (0);
 }
 
-void		add_pipe_handle(t_data *data, t_room *room, t_room *new_pipe)
+void			add_pipe_handle(t_data *data, t_room *room, t_room *new_pipe)
 {
 	t_list	*tmp2;
 
@@ -195,7 +225,7 @@ void		add_pipe_handle(t_data *data, t_room *room, t_room *new_pipe)
 	}
 }
 
-void		add_pipe_to_room_list(t_data *data)
+void			add_pipe_to_room_list(t_data *data)
 {
 	t_list	*tmp;
 	t_pipe	*pipe;

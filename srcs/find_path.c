@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/05 17:23:34 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/06/08 17:40:28 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/06/14 17:05:07 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static void		create_shorter_path_list(t_data *data)
 	new = ft_lstnew(&data->room_pipe_content, sizeof(t_room_pipe));
 	((t_room_pipe *)new->content)->room = (t_room *)tmp->content;
 	ft_lstadd(&data->path, new);
-	tmp = add_path(data, ((t_room *)tmp->content)->room_pipe); 
+	tmp = add_path(data, ((t_room *)tmp->content)->room_pipe);
 	while (((t_room_pipe *)tmp->content)->room->start != 1)
 		tmp = add_path(data, ((t_room_pipe *)tmp->content)->room->room_pipe);
 }

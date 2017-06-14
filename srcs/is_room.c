@@ -6,39 +6,47 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:43:45 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/03/02 22:47:11 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/06/14 17:47:54 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
+static int	check_if_coord_at_end(char *name, int *len)
+{
+	int		coord;
+	int		i;
+
+	coord = 0;
+	while (*len && coord != 2)
+	{
+		i = 0;
+		while (*len && name[*len] != ' ')
+		{
+			(*len)--;
+			i++;
+		}
+		if (*len && ft_strnisnumber(name + *len + 1, i))
+		{
+			coord++;
+			(*len)--;
+		}
+		else
+			return (0);
+	}
+	return (1);
+}
+
 int			is_room(char *name)
 {
 	int		len;
 	int		ret;
-	int		coord;
 	int		i;
 
 	ret = 1;
-	coord = 0;
 	if ((len = ft_strlen(name) - 1) < 1)
 		ret = 0;
-	while (len && ret && coord != 2)
-	{
-		i = 0;
-		while (len && name[len] != ' ')
-		{
-			len--;
-			i++;
-		}
-		if (len && ft_strnisnumber(name + len + 1, i))
-		{
-			coord++;
-			len--;
-		}
-		else
-			ret = 0;
-	}
+	ret = check_if_coord_at_end(name, &len);
 	i = len;
 	while (ret && len > -1)
 	{

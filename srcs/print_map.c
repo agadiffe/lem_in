@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/25 13:31:11 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/06/06 20:29:18 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/06/14 17:05:32 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static void		check_if_command_after_pipe(t_data *data)
 			{
 				ft_lstdel(&tmp, free_instruction_content);
 				last_node->next = NULL;
-				return;
+				return ;
 			}
 			last_node = tmp;
 			tmp = tmp->next;

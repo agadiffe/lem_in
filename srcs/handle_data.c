@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/06 19:34:06 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/06/07 18:39:21 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/06/14 17:04:42 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void		command_handle(t_data *data, char *command, char *name)
 		if (!ft_strcmp(command, get_command(0)[i].name))
 		{
 			get_command(0)[i].choice(data, name);
-			return;
+			return ;
 		}
 	}
 }
