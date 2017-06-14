@@ -34,20 +34,20 @@ static int	check_if_coord_at_end(char *name, int *len)
 		else
 			return (0);
 	}
-	return (1);
+	return (coord == 2 ? 1 : 0);
 }
 
 int			is_room(char *name)
 {
 	int		len;
 	int		ret;
-	int		i;
+	int		save;
 
 	ret = 1;
 	if ((len = ft_strlen(name) - 1) < 1)
 		ret = 0;
 	ret = check_if_coord_at_end(name, &len);
-	i = len;
+	save = len;
 	while (ret && len > -1)
 	{
 		if (name[len] != '-')
@@ -55,7 +55,7 @@ int			is_room(char *name)
 		else
 			ret = 0;
 	}
-	len = i;
+	len = save;
 	while (len > -1 && (name[len] == ' ' || name[len] == '\t'))
 		len--;
 	if (len < 0)
