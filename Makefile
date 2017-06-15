@@ -6,7 +6,7 @@
 #    By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/05/14 20:31:10 by agadiffe          #+#    #+#              #
-#    Updated: 2017/06/06 20:30:24 by agadiffe         ###   ########.fr        #
+#    Updated: 2017/06/15 18:47:01 by agadiffe         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,15 +19,19 @@ CC = clang
 CFLAGS += -Wall -Werror -Wextra
 
 SRC_PATH = ./srcs/
-SRC_NAME = main.c				\
-		   print_map.c			\
-		   add_node.c			\
-		   command.c			\
-		   is_room.c			\
-		   list_func.c			\
-		   handle_data.c		\
-		   print_ants_path.c	\
-		   find_path.c
+SRC_NAME = main.c						\
+		   print_map.c					\
+		   add_pipe.c					\
+		   add_pipe_to_room_list.c		\
+		   command.c					\
+		   is_room.c					\
+		   get_functions.c				\
+		   handle_data.c				\
+		   print_ants_path.c			\
+		   add_room.c					\
+		   find_path.c					\
+		   print_functions_lstiter.c	\
+		   free_functions_lstdel.c
 
 OBJ_PATH = ./obj/
 OBJ_NAME = $(SRC_NAME:.c=.o)

@@ -6,13 +6,13 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/23 11:19:45 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/06/06 20:29:02 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/06/15 18:38:04 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-int			get_ants_number(void)
+static int		get_ants_number(void)
 {
 	char	*line;
 	int		ants;
@@ -26,7 +26,16 @@ int			get_ants_number(void)
 	return (ants > 0 ? ants : 0);
 }
 
-int			get_data(t_data *data, char *s)
+static void		add_new_instruction(t_data *data, char *s)
+{
+	t_list		*tmp;
+
+	tmp = ft_lstnew(&data->instruction_content, sizeof(t_instruction));
+	ft_lstaddback(&data->instruction, tmp);
+	((t_instruction *)tmp->content)->instruction = s;
+}
+
+int				get_data(t_data *data, char *s)
 {
 	int		bad_data;
 
@@ -44,7 +53,7 @@ int			get_data(t_data *data, char *s)
 	return (bad_data ? 1 : 0);
 }
 
-void		init_data(t_data *data)
+void			init_data(t_data *data)
 {
 	data->get_room_data = 1;
 	data->stop_get_data = 0;
@@ -55,7 +64,7 @@ void		init_data(t_data *data)
 	data->path = NULL;
 }
 
-int			main(int ac, char **av)
+int				main(int ac, char **av)
 {
 	char		*line;
 	t_data		data;

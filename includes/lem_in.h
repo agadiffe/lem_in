@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/23 12:06:15 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/06/08 18:47:10 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/06/15 18:48:46 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,11 +76,19 @@ typedef struct		s_command
 }					t_command;
 
 /*
-**	add_node.c.c
+**	add_room.c
 */
 int					add_new_room(t_data *data, char *s);
-void				add_new_instruction(t_data *data, char *s);
+t_list				*copy_lst(t_list *elem);
+
+/*
+**	add_pipe.c
+*/
 int					add_new_pipe(t_data *data, char *s);
+
+/*
+**	add_pipe_to_room_list.c
+*/
 void				add_pipe_to_room_list(t_data *data);
 
 /*
@@ -101,7 +109,10 @@ t_list				*get_start_room(t_list **alst);
 t_list				*get_room_node_by_name(t_list **alst, char *name);
 t_list				*get_room_node_by_coord(t_list **alst, int x, int y);
 t_list				*get_pipe_node(t_list **alst, char *name1, char *name2);
-t_list				*get_instruction_node(t_list **alst, char *name);
+
+/*
+**	free_functions_lstdel.c
+*/
 void				free_instruction_content(void *content,
 											size_t content_size);
 void				free_room_content(void *content, size_t content_size);
@@ -111,6 +122,14 @@ void				free_pipe_content(void *content, size_t content_size);
 **	print_map.c
 */
 void				print_map(t_data *data);
+
+/*
+**	print_functions_lstiter.c
+*/
+void				print_inst(t_list *elem);
+void				print_room(t_list *elem);
+void				print_pipe(t_list *elem);
+void				print_last_comment(t_list *elem);
 
 /*
 **	handle_data.c
