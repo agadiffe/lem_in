@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/05 17:23:34 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/06/14 17:05:07 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/06/15 19:52:24 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,20 +51,21 @@ static t_list	*add_path(t_data *data, t_list *pipe_list)
 	return (tmp);
 }
 
-static void		create_shorter_path_list(t_data *data)
+static int		create_shorter_path_list(t_data *data)
 {
 	t_list	*tmp;
 	t_list	*new;
 
 	tmp = get_end_room(&data->room);
 	if (((t_room *)tmp->content)->path == 0)
-		ft_error("ERROR", 2);
+		return (0);
 	new = ft_lstnew(&data->room_pipe_content, sizeof(t_room_pipe));
 	((t_room_pipe *)new->content)->room = (t_room *)tmp->content;
 	ft_lstadd(&data->path, new);
 	tmp = add_path(data, ((t_room *)tmp->content)->room_pipe);
 	while (((t_room_pipe *)tmp->content)->room->start != 1)
 		tmp = add_path(data, ((t_room_pipe *)tmp->content)->room->room_pipe);
+	return (1);
 }
 
 static void		handle_path(t_list *elem)
@@ -100,10 +101,8 @@ void			find_path(t_data *data)
 
 	start = get_start_room(&data->room);
 	((t_room *)start->content)->checked = 1;
-	tmp = ((t_room *)start->content)->room_pipe;
-	if (tmp)
-	{
+	if ((tmp = ((t_room *)start->content)->room_pipe))
 		ft_lstiter(tmp, handle_path);
-		create_shorter_path_list(data);
-	}
+	if (!create_shorter_path_list(data))
+		ft_error("ERROR", 2);
 }
