@@ -31,7 +31,8 @@ SRC_NAME = main.c						\
 		   add_room.c					\
 		   find_path.c					\
 		   print_functions_lstiter.c	\
-		   free_functions_lstdel.c
+		   free_functions_lstdel.c		\
+		   ft_atoi_lemin.c
 
 OBJ_PATH = ./obj/
 OBJ_NAME = $(SRC_NAME:.c=.o)

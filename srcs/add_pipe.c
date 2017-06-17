@@ -101,14 +101,15 @@ int				add_new_pipe(t_data *data, char *s)
 	new_pipe = (t_pipe *)tmp->content;
 	init_data_new_pipe(data, s, str, new_pipe);
 	bad_data = new_pipe->room1 && new_pipe->room2 ? 0 : 1;
-	if (bad_data == 0)
+	if (bad_data || handle_pipe_instruction(data, new_pipe, s, str))
 	{
-		if (handle_pipe_instruction(data, new_pipe, s, str))
-			ft_memdel((void**)&tmp);
-		ft_lstaddback(&data->pipe, tmp);
+		ft_strdel(&s);
+		ft_memdel((void**)&tmp);
 	}
 	else
-		ft_memdel((void**)&tmp);
-	*str = '-';
+	{
+		ft_lstaddback(&data->pipe, tmp);
+		*str = '-';
+	}
 	return (bad_data ? 1 : 0);
 }

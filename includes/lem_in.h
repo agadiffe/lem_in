@@ -113,6 +113,7 @@ t_list				*get_pipe_node(t_list **alst, char *name1, char *name2);
 /*
 **	free_functions_lstdel.c
 */
+void				free_all(t_data *data);
 void				free_instruction_content(void *content,
 											size_t content_size);
 void				free_room_content(void *content, size_t content_size);
@@ -145,5 +146,10 @@ void				find_path(t_data *data);
 **	print_ants_path.c
 */
 void				print_ants_path(t_data *data);
+
+/*
+**	ft_atoi_lemin.c
+*/
+int					ft_atoi_lemin(const char *s);
 
 #endif

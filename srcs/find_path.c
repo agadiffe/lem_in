@@ -104,5 +104,8 @@ void			find_path(t_data *data)
 	if ((tmp = ((t_room *)start->content)->room_pipe))
 		ft_lstiter(tmp, handle_path);
 	if (!create_shorter_path_list(data))
+	{
+		free_all(data);
 		ft_error("ERROR", 2);
+	}
 }

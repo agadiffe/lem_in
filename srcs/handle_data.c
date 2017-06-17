@@ -100,6 +100,9 @@ void			handle_data(t_data *data)
 	do_room_command(data);
 	do_pipe_command(data);
 	if (!check_if_start_and_end(data->room))
+	{
+		free_all(data);
 		ft_error("ERROR", 3);
+	}
 	find_path(data);
 }
