@@ -83,5 +83,6 @@ int				main(int ac, char **av)
 	handle_data(&data);
 	print_map(&data);
 	print_ants_path(&data);
+	free_all(&data);
 	return (0);
 }
