@@ -65,6 +65,7 @@ static int		handle_pipe_instruction(t_data *data, t_pipe *new_pipe,
 		{
 			data->stop_get_data = 1;
 			data->instruction = new_pipe->instruction;
+			new_pipe->instruction = NULL;
 			return (1);
 		}
 		else
@@ -104,6 +105,7 @@ int				add_new_pipe(t_data *data, char *s)
 	if (bad_data || handle_pipe_instruction(data, new_pipe, s, str))
 	{
 		ft_strdel(&s);
+		ft_memdel((void**)&tmp->content);
 		ft_memdel((void**)&tmp);
 	}
 	else

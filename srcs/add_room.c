@@ -41,19 +41,21 @@ static void		check_if_room_exist(t_data *data, t_room *room)
 	}
 }
 
-static void		init_coord_new_room(int *room_coord, char *s)
+static void		init_coord_new_room(t_data *data, int *room_coord, char *s)
 {
 	char		*str;
 
 	str = ft_strrchr(s, ' ');
-	*room_coord = ft_atoi(str);
+	*room_coord = ft_atoi_lemin(str + 1, data);
 	*str = '\0';
 }
 
 static void		init_data_new_room(t_data *data, t_room *room, char *s)
 {
-	init_coord_new_room(&room->y, s);
-	init_coord_new_room(&room->x, s);
+	init_coord_new_room(data, &room->y, s);
+	init_coord_new_room(data, &room->x, s);
+	if (data->stop_get_data)
+		return ;
 	room->ants = 0;
 	room->old = 0;
 	room->start = 0;
@@ -76,8 +78,18 @@ int				add_new_room(t_data *data, char *s)
 	{
 		tmp = ft_lstnew(&data->room_content, sizeof(t_room));
 		init_data_new_room(data, (t_room *)tmp->content, s);
-		check_if_room_exist(data, (t_room *)tmp->content);
-		ft_lstaddback(&data->room, tmp);
+		if (data->stop_get_data)
+		{
+			bad_data = 1;
+			ft_strdel(&s);
+			ft_memdel((void**)&tmp->content);
+			ft_memdel((void**)&tmp);
+		}
+		else
+		{
+			check_if_room_exist(data, (t_room *)tmp->content);
+			ft_lstaddback(&data->room, tmp);
+		}
 	}
 	else
 		bad_data = 1;

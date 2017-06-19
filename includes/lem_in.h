@@ -150,6 +150,6 @@ void				print_ants_path(t_data *data);
 /*
 **	ft_atoi_lemin.c
 */
-int					ft_atoi_lemin(const char *s);
+int					ft_atoi_lemin(const char *s, t_data *data);
 
 #endif

@@ -12,7 +12,7 @@
 
 #include "lem_in.h"
 
-static int		get_ants_number(void)
+static int		get_ants_number(t_data *data)
 {
 	char	*line;
 	int		ants;
@@ -20,8 +20,7 @@ static int		get_ants_number(void)
 	line = NULL;
 	ants = 0;
 	ft_get_next_line(0, &line);
-	if (ft_strisnumber(line))
-		ants = ft_atoi(line);
+	ants = ft_atoi_lemin(line, data);
 	ft_strdel(&line);
 	return (ants > 0 ? ants : 0);
 }
@@ -35,7 +34,7 @@ static void		add_new_instruction(t_data *data, char *s)
 	((t_instruction *)tmp->content)->instruction = s;
 }
 
-int				get_data(t_data *data, char *s)
+static int		get_data(t_data *data, char *s)
 {
 	int		bad_data;
 
@@ -57,7 +56,7 @@ void			init_data(t_data *data)
 {
 	data->get_room_data = 1;
 	data->stop_get_data = 0;
-	data->ants = get_ants_number();
+	data->ants = get_ants_number(data);
 	data->room = NULL;
 	data->pipe = NULL;
 	data->instruction = NULL;

@@ -13,7 +13,13 @@
 #include "lem_in.h"
 #include <limits.h>
 
-int		ft_atoi_lemin(const char *s)
+static int		atoi_error(t_data *data)
+{
+	data->stop_get_data = 1;
+	return (0);
+}
+
+int				ft_atoi_lemin(const char *s, t_data *data)
 {
 	long long	is_neg;
 	long long	n;
@@ -28,14 +34,14 @@ int		ft_atoi_lemin(const char *s)
 		s++;
 	}
 	if (!*s)
-		ft_error("ERROR", 4);
+		return (atoi_error(data));
 	while (*s && ft_isdigit(*s))
 	{
 		n = n * 10 + (*s++ - '0');
 		if (n > INT_MAX + is_neg)
-			ft_error("ERROR", 4);
+			return (atoi_error(data));
 	}
 	if (*s)
-		ft_error("ERROR", 4);
+		return (atoi_error(data));
 	return (is_neg ? -n : n);
 }
