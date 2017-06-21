@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/23 11:19:45 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/06/15 18:38:04 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/06/21 16:31:11 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,11 @@ int				main(int ac, char **av)
 	init_data(&data);
 	if (data.ants == 0)
 		ft_error("ERROR", 1);
-	while (!data.stop_get_data && ft_get_next_line(0, &line) > 0)
+	while (ft_get_next_line(0, &line) > 0)
 	{
-		if (get_data(&data, line))
+		if (data.stop_get_data)
+			ft_strdel(&line);
+		else if (get_data(&data, line))
 			data.stop_get_data = 1;
 	}
 	add_pipe_to_room_list(&data);
