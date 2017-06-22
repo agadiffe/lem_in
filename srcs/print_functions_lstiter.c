@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/15 15:59:21 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/06/15 16:00:19 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/06/22 15:36:03 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,15 @@ void		print_inst(t_list *elem)
 
 void		print_room(t_list *elem)
 {
-	ft_lstiter(((t_room *)elem->content)->instruction, print_inst);
-	ft_putstr(((t_room *)elem->content)->name);
+	t_room	*tmp;
+
+	tmp = (t_room *)elem->content;
+	ft_lstiter(tmp->instruction, print_inst);
+	ft_putstr(tmp->name);
 	ft_putstr(" ");
-	ft_putnbr(((t_room *)elem->content)->x);
+	ft_putnbr(tmp->x);
 	ft_putstr(" ");
-	ft_putnbr_endl(((t_room *)elem->content)->y);
+	ft_putnbr_endl(tmp->y);
 }
 
 void		print_pipe(t_list *elem)

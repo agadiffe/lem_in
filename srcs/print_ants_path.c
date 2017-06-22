@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/06 20:22:13 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/06/08 20:08:54 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/06/22 15:33:11 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,15 @@
 
 static void		print_ants_in_room(t_list *elem)
 {
-	if (((t_room_pipe *)elem->content)->room->ants > 0)
+	t_room_pipe		*tmp;
+
+	tmp = (t_room_pipe *)elem->content;
+	if (tmp->room->ants > 0)
 	{
 		ft_putstr("L");
-		ft_putnbr(((t_room_pipe *)elem->content)->room->ants);
+		ft_putnbr(tmp->room->ants);
 		ft_putstr("-");
-		ft_putstr(((t_room_pipe *)elem->content)->room->name);
+		ft_putstr(tmp->room->name);
 		if (elem->next && ((t_room_pipe *)elem->next->content)->room->ants > 0)
 			ft_putstr(" ");
 	}
@@ -27,23 +30,23 @@ static void		print_ants_in_room(t_list *elem)
 
 static void		move_ants(t_list *path, int ants)
 {
-	t_list	*tmp;
-	int		save;
+	t_list			*lst;
+	t_room_pipe		*tmp;
+	int				save;
 
-	tmp = path;
+	lst = path;
 	save = 1;
-	while (tmp)
+	while (lst)
 	{
-		if (((t_room_pipe *)tmp->content)->room->ants == 0
-				|| ((t_room_pipe *)tmp->content)->room->end)
+		tmp = (t_room_pipe *)lst->content;
+		if (tmp->room->ants == 0 || tmp->room->end)
 		{
-			((t_room_pipe *)tmp->content)->room->ants = save;
+			tmp->room->ants = save;
 			return ;
 		}
-		save = ((t_room_pipe *)tmp->content)->room->ants;
-		((t_room_pipe *)tmp->content)->room->ants =
-			save < ants && save > 0 ? save + 1 : -1;
-		tmp = tmp->next;
+		save = tmp->room->ants;
+		tmp->room->ants = save < ants && save > 0 ? save + 1 : -1;
+		lst = lst->next;
 	}
 }
 

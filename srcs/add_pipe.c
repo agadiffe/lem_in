@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:39:45 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/06/15 18:46:02 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/06/22 15:30:46 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,20 +38,18 @@ static void		merge_instruction(t_data *data, t_pipe *new_pipe,
 									char *s, char *str)
 {
 	t_list		*pipe;
+	t_pipe		*tmp;
 
 	if ((pipe = get_pipe_node(&data->pipe, s, str + 1)))
 	{
-		ft_lstaddback(&((t_pipe *)pipe->content)->all_instruction,
+		tmp = (t_pipe *)pipe->content;
+		ft_lstaddback(&tmp->all_instruction,
 					ft_lstmap(new_pipe->instruction, copy_lst));
-		new_pipe->all_instruction =
-			((t_pipe *)pipe->content)->all_instruction;
+		new_pipe->all_instruction = tmp->all_instruction;
 		new_pipe->old = 1;
 	}
 	else
-	{
-		new_pipe->all_instruction =
-			ft_lstmap(new_pipe->instruction, copy_lst);
-	}
+		new_pipe->all_instruction = ft_lstmap(new_pipe->instruction, copy_lst);
 }
 
 static int		handle_pipe_instruction(t_data *data, t_pipe *new_pipe,

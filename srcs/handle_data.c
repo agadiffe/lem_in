@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/06 19:34:06 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/06/14 17:04:42 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/06/22 15:32:33 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,18 +56,20 @@ static void		do_pipe_command(t_data *data)
 {
 	t_list		*tmp;
 	t_list		*tmp2;
+	t_pipe		*pipe;
 	char		*str;
 
 	tmp = data->pipe;
 	while (tmp)
 	{
-		if (((t_pipe *)tmp->content)->old != 1)
+		pipe = (t_pipe *)tmp->content;
+		if (pipe->old != 1)
 		{
-			tmp2 = ((t_pipe *)tmp->content)->all_instruction;
+			tmp2 = pipe->all_instruction;
 			while (tmp2)
 			{
 				str = ((t_instruction *)tmp2->content)->instruction;
-				command_handle(data, str, ((t_pipe *)tmp->content)->name);
+				command_handle(data, str, pipe->name);
 				tmp2 = tmp2->next;
 			}
 		}
@@ -80,15 +82,17 @@ static int		check_if_start_and_end(t_list *room)
 	t_list	*tmp;
 	t_list	*start;
 	t_list	*end;
+	t_room	*tmp_room;
 
 	start = NULL;
 	end = NULL;
 	tmp = room;
 	while (tmp)
 	{
-		if (((t_room *)tmp->content)->start == 1)
+		tmp_room = (t_room *)tmp->content;
+		if (tmp_room->start == 1)
 			start = tmp;
-		if (((t_room *)tmp->content)->end == 1)
+		if (tmp_room->end == 1)
 			end = tmp;
 		tmp = tmp->next;
 	}

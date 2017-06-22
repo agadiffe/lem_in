@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/05 17:23:34 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/06/15 19:52:24 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/06/22 16:20:59 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,11 @@
 
 static t_list	*get_lower_path(t_list **room_pipe)
 {
-	t_list	*tmp;
-	t_list	*lower;
-	int		path;
-	int		tmp_path;
+	t_list			*tmp;
+	t_list			*lower;
+	t_room_pipe		*pipe;
+	int				path;
+	int				tmp_path;
 
 	tmp = *room_pipe;
 	path = ((t_room_pipe *)tmp->content)->room->path;
@@ -25,9 +26,10 @@ static t_list	*get_lower_path(t_list **room_pipe)
 	tmp = tmp->next;
 	while (tmp)
 	{
-		if (((t_room_pipe *)tmp->content)->room->old != 1)
+		pipe = (t_room_pipe *)tmp->content;
+		if (pipe->room->old != 1)
 		{
-			tmp_path = ((t_room_pipe *)tmp->content)->room->path;
+			tmp_path = pipe->room->path;
 			if (tmp_path < path)
 			{
 				path = tmp_path;
@@ -53,8 +55,9 @@ static t_list	*add_path(t_data *data, t_list *pipe_list)
 
 static int		create_shorter_path_list(t_data *data)
 {
-	t_list	*tmp;
-	t_list	*new;
+	t_list			*tmp;
+	t_list			*new;
+	t_room_pipe		*pipe;
 
 	tmp = get_end_room(&data->room);
 	if (((t_room *)tmp->content)->path == 0)
@@ -63,8 +66,12 @@ static int		create_shorter_path_list(t_data *data)
 	((t_room_pipe *)new->content)->room = (t_room *)tmp->content;
 	ft_lstadd(&data->path, new);
 	tmp = add_path(data, ((t_room *)tmp->content)->room_pipe);
-	while (((t_room_pipe *)tmp->content)->room->start != 1)
-		tmp = add_path(data, ((t_room_pipe *)tmp->content)->room->room_pipe);
+	pipe = (t_room_pipe *)tmp->content;
+	while (pipe->room->start != 1)
+	{
+		tmp = add_path(data, pipe->room->room_pipe);
+		pipe = (t_room_pipe *)tmp->content;
+	}
 	return (1);
 }
 
