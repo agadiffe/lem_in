@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/23 11:19:45 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/06/21 16:31:11 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/06/22 16:41:24 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,11 @@ static int		get_ants_number(t_data *data)
 	line = NULL;
 	ants = 0;
 	ft_get_next_line(0, &line);
-	ants = ft_atoi_lemin(line, data);
-	ft_strdel(&line);
+	if (line)
+	{
+		ants = ft_atoi_lemin(line, data);
+		ft_strdel(&line);
+	}
 	return (ants > 0 ? ants : 0);
 }
 
