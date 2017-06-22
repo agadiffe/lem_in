@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/05 17:23:34 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/06/22 16:20:59 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/06/22 20:41:34 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,11 +91,20 @@ static void		handle_path(t_list *elem)
 	while (pipe_lst)
 	{
 		tmp2 = (t_room_pipe *)pipe_lst->content;
-		if (tmp2->room->checked == 0)
+		if (tmp2->room->checked == 0 || tmp2->room->end)
 		{
-			tmp2->room->checked = 1;
-			tmp2->room->path = tmp->room->path + 1;
-			ft_lstiter(pipe_lst, handle_path);
+			if (tmp2->room->end && tmp2->room->checked)
+			{
+				if (tmp->room->path + 1 < tmp2->room->path)
+					tmp2->room->path = tmp->room->path + 1;
+			}
+			else
+			{
+				tmp2->room->checked = 1;
+				tmp2->room->path = tmp->room->path + 1;
+			}
+			if (tmp2->room->end != 1)
+				ft_lstiter(pipe_lst, handle_path);
 		}
 		pipe_lst = pipe_lst->next;
 	}
@@ -110,6 +119,8 @@ void			find_path(t_data *data)
 	((t_room *)start->content)->checked = 1;
 	if ((tmp = ((t_room *)start->content)->room_pipe))
 		ft_lstiter(tmp, handle_path);
+	ft_lstiter(data->room, print_room);
+	ft_lstiter(data->pipe, print_pipe);
 	if (!create_shorter_path_list(data))
 	{
 		free_all(data);
