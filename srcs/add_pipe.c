@@ -6,26 +6,30 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 22:39:45 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/06/22 15:30:46 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/06/22 18:12:08 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-static int		check_if_start_or_end(t_list *inst)
+static int		check_if_start_or_end(t_pipe *pipe)
 {
 	char	*tmp_inst;
 	t_list	*tmp;
 	t_list	*save;
 
-	tmp = inst;
+	tmp = pipe->instruction;
+	save = NULL;
 	while (tmp)
 	{
 		tmp_inst = ((t_instruction *)tmp->content)->instruction;
 		if (!ft_strcmp(tmp_inst, "##start") || !ft_strcmp(tmp_inst, "##end"))
 		{
 			ft_lstdel(&tmp, free_instruction_content);
-			save->next = NULL;
+			if (save)
+				save->next = NULL;
+			else
+				pipe->instruction = NULL;
 			return (1);
 		}
 		save = tmp;
@@ -59,7 +63,7 @@ static int		handle_pipe_instruction(t_data *data, t_pipe *new_pipe,
 	data->instruction = NULL;
 	if (new_pipe->instruction)
 	{
-		if (check_if_start_or_end(new_pipe->instruction))
+		if (check_if_start_or_end(new_pipe))
 		{
 			data->stop_get_data = 1;
 			data->instruction = new_pipe->instruction;
