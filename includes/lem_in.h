@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/23 12:06:15 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/06/15 18:48:46 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/06/23 15:56:52 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ typedef struct		s_room
 {
 	int				ants;
 	int				path;
-	int				checked;
 	int				old;
 	int				start;
 	int				end;

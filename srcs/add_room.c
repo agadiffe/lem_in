@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/15 15:45:43 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/06/22 15:33:27 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/06/23 15:56:58 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ static void		init_data_new_room(t_data *data, t_room *room, char *s)
 	room->name = s;
 	room->room_pipe = NULL;
 	room->path = 0;
-	room->checked = 0;
 	room->instruction = data->instruction;
 	data->instruction = NULL;
 }
