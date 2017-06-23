@@ -24,12 +24,9 @@ static t_list	*get_lower_path(t_data *data, t_list *room_pipe,
 		pipe = (t_room_pipe *)tmp->content;
 		if (pipe->room->old != 1 && pipe->room->path == prev_path - 1
 				&& get_pipe_node(&data->pipe, pipe->room->name, prev_node))
-		{
 			return (tmp);
-		}
 		tmp = tmp->next;
 	}
-	ft_putendl("oops");
 	return (NULL);
 }
 
@@ -77,14 +74,12 @@ static void		handle_path(t_list *elem)
 	t_list			*pipe_lst;
 
 	tmp = (t_room_pipe *)elem->content;
-	if (tmp->room->path == 0 && tmp->room->start == 0)
-		tmp->room->path = 1;
 	pipe_lst = tmp->room->room_pipe;
 	while (pipe_lst)
 	{
 		tmp2 = (t_room_pipe *)pipe_lst->content;
 		if ((tmp2->room->path == 0 || tmp->room->path + 1 < tmp2->room->path)
-				&& tmp2->room->start == 0)
+				&& tmp2->room->start == 0 && tmp->room->path)
 		{
 			if (tmp->room->path + 1 < tmp2->room->path)
 				tmp2->room->path = tmp->room->path + 1;
@@ -99,14 +94,21 @@ static void		handle_path(t_list *elem)
 
 void			find_path(t_data *data)
 {
-	t_list			*tmp;
-	t_list			*start;
+	t_list	*tmp;
+	t_list	*lst;
+	t_list	*start;
 
 	start = get_start_room(&data->room);
 	if ((tmp = ((t_room *)start->content)->room_pipe))
+	{
+		lst = tmp;
+		while (lst)
+		{
+			((t_room_pipe *)lst->content)->room->path = 1;
+			lst = lst->next;
+		}
 		ft_lstiter(tmp, handle_path);
-	ft_lstiter(data->room, print_room);
-	ft_lstiter(data->pipe, print_pipe);
+	}
 	if (!create_shorter_path_list(data))
 	{
 		free_all(data);
