@@ -6,7 +6,7 @@
 /*   By: agadiffe <agadiffe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/06 20:22:13 by agadiffe          #+#    #+#             */
-/*   Updated: 2017/06/22 15:33:11 by agadiffe         ###   ########.fr       */
+/*   Updated: 2017/10/19 15:08:43 by agadiffe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void		print_ants_in_room(t_list *elem)
 	t_room_pipe		*tmp;
 
 	tmp = (t_room_pipe *)elem->content;
-	if (tmp->room->ants > 0)
+	if (tmp->room->ants > 0 && tmp->room->start == 0)
 	{
 		ft_putstr("L");
 		ft_putnbr(tmp->room->ants);
@@ -25,6 +25,8 @@ static void		print_ants_in_room(t_list *elem)
 		ft_putstr(tmp->room->name);
 		if (elem->next && ((t_room_pipe *)elem->next->content)->room->ants > 0)
 			ft_putstr(" ");
+		else
+			ft_putendl("");
 	}
 }
 
@@ -61,6 +63,5 @@ void			print_ants_path(t_data *data)
 	{
 		move_ants(data->path, data->ants);
 		ft_lstiter(data->path, print_ants_in_room);
-		ft_putendl("");
 	}
 }
